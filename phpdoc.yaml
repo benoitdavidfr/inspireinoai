@@ -1,0 +1,20 @@
+title: inspireoai - Spécification des services Inspire en Open API Initiative
+path: /geoapi/inspireoai
+doc: |
+  https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md
+  
+  Définir en OAI l'interface d'une SDI ayant les fonctionnalités suivantes:
+    - interface conforme aux règlements Inspire
+    - possibilité d'exposer selon cette interface une SDI existante
+    - pour les nouvelles API, l'interface définit un profil à respecter
+    
+journal: |
+  10/2/2018 :
+    création
+htmlFiles:
+  - /geoapi/inspireoai/inspire-service.yaml
+  - /geoapi/inspireoai/inspire-oai.yaml
+  - /geoapi/inspireoai/inspire-appli.yaml
+phpScripts:
+phpIncludes:
+submodules:

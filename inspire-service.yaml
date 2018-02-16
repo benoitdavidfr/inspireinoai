@@ -1,0 +1,360 @@
+titre: opérations des services Inspire
+doc: |
+  Description des opérations d'un service Inspire de recherche, de consultation ou de téléchargement.
+  Le champ refLeg référence les parties du règlement définissant ces services
+refLeg:
+  uri: http://data.europa.eu/eli/reg/2009/976/2014-12-31
+  titleEn: |
+    Commission Regulation (EC) No 976/2009 of 19 October 2009 implementing Directive 2007/2/EC of the European
+    Parliament and of the Council as regards the Network Services
+  titleFr: |
+    Règlement (CE) n o 976/2009 de la Commission du 19 octobre 2009 portant modalités d’application de la directive
+    2007/2/CE du Parlement européen et du Conseil en ce qui concerne les services en réseau
+serviceTypes:
+  search:
+    refLeg: '#AnnexII'
+    opérations:
+      GetCapabilities:
+        titre: Accéder aux métadonnées du service
+        refLeg: '-PartB-Section2'
+        rôle: |
+          Fournit toutes les informations nécessaires concernant le service et les séries de données géographiques 
+          disponibles et décrit les capacités du service.
+        paramètresDeDemande:
+          - titre: langage
+            contenu: langage naturel qui sera utilisé pour le contenu de la réponse
+        élémentsDeRéponse:
+          — titre: métadonnées du service
+            contenu: contiennent au moins les éléments de métadonnées Inspire du service.
+          — titre: métadonnées des opérations
+            contenu: |
+              fournissent des métadonnées concernant les opérations effectuées par le service de recherche.
+              Elles décrivent chaque opération et fournissent au moins les éléments suivants:
+                - elles indiquent, pour l’opération «Publier des métadonnées», les mécanismes disponibles:
+                  extraction, introduction, ou les deux;
+                - elles décrivent chaque opération, en donnant au moins une description des données échangées et
+                  l’adresse réseau.
+          — titre: langage de réponse
+            contenu: |
+              le langage naturel utilisé dans les paramètres de la réponse à l'opération
+          — titre: langages pris en charge
+            contenu: |
+              la liste des langages naturels pouvant être pris en charge par le service de téléchargement
+      Search:
+        titre: Rechercher des métadonnées
+        refLeg: '-PartB-Section3'
+        rôle: |
+          permet de récupérer par le service de recherche cible, en fonction d’une instruction d’interrogation,
+          des éléments de métadonnées Inspire relatifs à des ressources
+        paramètresDeDemande:
+          - titre: langage
+            contenu: langage naturel demandé pour le contenu de la réponse
+          - titre: interrogation
+            contenu: contient la combinaison de critères de recherche précisée dans la section critèresDeRecherche
+            critèresDeRecherche:
+        élémentsDeRéponse:
+          — titre: métadonnées
+            contenu: |
+              contient au moins les éléments de métadonnées Inspire de chacune des ressources correspondant à
+              l’interrogation.
+      Publish:
+        titre: Publier des métadonnées
+        refLeg: '-PartB-Section4'
+        rôle: |
+          permet de modifier, dans le service de recherche, des éléments de métadonnées Inspire relatifs à des
+          ressources (mécanismes d’introduction ou d’extraction de métadonnées). Par «modifier», on entend insérer,
+          actualiser et supprimer
+          Le service doit pouvoir prendre en charge un des deux mécanismes au moins.
+        mécanismes:
+          push:
+            titre: mécanisme d’introduction
+            rôle: |
+              mécanisme permettant de modifier des éléments de métadonnées Inspire relatifs à des ressources
+              accessibles à partir du service de recherche
+            opérations:
+              titre: Modifier des métadonnées
+              paramètresDeDemande:
+                - titre: informations
+                  contenu: |
+                    fournit toutes les informations nécessaires pour permettre l’insertion, l’actualisation ou
+                    la suppression d’éléments de métadonnées Inspire des ressources dans le service de recherche.
+          pull:
+            titre: mécanisme d’extraction
+            rôle: |
+              mécanisme permettant au service de recherche de l’État membre d’extraire à distance des éléments de
+              métadonnées Inspire relatifs à des ressources.
+            opérations:
+              titre: Collecter des métadonnées
+              paramètresDeDemande:
+                - titre: informations
+                  contenu: |
+                    fournit toutes les informations concernant l’emplacement à distance qui sont nécessaires pour
+                    récupérer les métadonnées disponibles relatives à des ressources. Il inclut au minimum les éléments
+                    de métadonnées Inspire du service de données géographiques dédié.
+      LinkToSdi:
+        titre: Relier le service
+        refLeg: '-PartB-Section5'
+        rôle: |
+          permet de déclarer la disponibilité d’un service de recherche pour la recherche de ressources par le service
+          de recherche de l’État membre tout en maintenant les métadonnées de la ressource chez le propriétaire
+        paramètresDeDemande:
+          - titre: informations
+            contenu: |
+              fournit toutes les informations relatives à un service de recherche d’une autorité publique ou d’un tiers
+              conforme au présent règlement et permet au service de recherche de l’État membre, au moyen d’une
+              combinaison de critères de recherche, d’accéder à des métadonnées de ressources provenant de ce service
+              de recherche ou d’un tiers, ainsi que de les assembler avec des métadonnées d’autres ressources.
+        élémentsDeRéponse:
+  view:
+    refLeg: '#AnnexIII'
+    opérations:
+      GetCapabilities:
+        titre: Accéder aux métadonnées du service
+        refLeg: '-PartA-Section2'
+        rôle: |
+          Fournit toutes les informations nécessaires concernant le service et décrit les capacités du service
+        paramètresDeDemande:
+          - titre: langage
+            contenu: langage naturel qui sera utilisé pour le contenu de la réponse
+        élémentsDeRéponse:
+          — titre: métadonnées du service
+            contenu: au moins les éléments de métadonnées Inspire du service
+          — titre: métadonnées des opérations
+            contenu: |
+              décrit les opérations du service de consultation et contient au moins une description des données
+              échangées et l’adresse réseau de chaque opération.
+          — titre: langage de réponse
+            contenu: |
+              le langage naturel utilisé dans les paramètres de la réponse à l'opération
+          — titre: langages pris en charge
+            contenu: |
+              la liste des langages naturels pouvant être pris en charge par le service de téléchargement
+          — titre: métadonnées des couches
+            contenu: |
+              Les éléments de métadonnées énumérés dans le tableau 3 doivent être fournis pour chaque couche.
+            élémentsDeMétadonnées:
+              title:
+                titre: Intitulé de la ressource
+                contenu: |
+                  L’intitulé de la couche, utilisé aux fins de la communication humaine, pour la présentation
+                  de la couche dans un menu, par exemple
+              abstract:
+                titre: Résumé de la ressource
+                contenu: Résumé de la couche
+              keywords:
+                titre: Mot-clé
+                contenu: Mots-clés supplémentaires
+              bbox:
+                titre: Rectangle de délimitation géographique
+                contenu: |
+                  Le rectangle de délimitation géographique décrit dans tous les systèmes de coordonnées pris en
+                  charge pour la région couverte par la couche
+              uri:
+                titre: Identificateur unique de ressource
+                contenu: L’identificateur unique de ressource utilisé pour créer la couche
+              name:
+                titre: Nom
+                contenu: Nom harmonisé de la couche
+              crs:
+                titre: Systèmes de coordonnées
+                contenu: Liste des systèmes de coordonnées dans lesquels la couche est disponible
+              styles:
+                titre: Styles
+                contenu: |
+                  Liste des styles de représentation disponibles pour la couche. Un style se compose d’un intitulé
+                  et d’un identificateur unique
+              legendUrl:
+                titre: URL de la légende
+                contenu: Emplacement de la légende pour chaque style, langage et paire de dimensions
+              dimensionPairs:
+                titre: Paires de dimensions
+                contenu: |
+                  Indique les paires d’axes bidimensionnels pris en charge pour les séries et les ensembles de séries
+                  de données géographiques multidimensionnelles
+      GetMap:
+        titre: Accéder à une carte
+        refLeg: '-PartA-Section3'
+        rôle: |
+          Renvoie une carte contenant les informations géographiques et thématiques provenant des séries de données
+          géographiques disponibles. Cette carte est une image géoréférencée
+        paramètresDeDemande:
+          - titre: Couches
+            contenu: Liste des noms des couches à inclure dans la carte
+          - titre: Styles
+            contenu: Liste des styles à utiliser pour chaque couche
+          - titre: Système de coordonnées
+            contenu: Système de coordonnées de la carte
+          - titre: Rectangle de délimitation
+            contenu: |
+              Coordonnées des quatre coins de la carte bidimensionnelle pour la paire de dimensions sélectionnée,
+              exprimées dans le système de coordonnées sélectionné
+          - titre: Largeur de l’image
+            contenu: Largeur de la carte en pixels
+          - titre: Hauteur de l’image
+            contenu: Hauteur de la carte en pixels
+          - titre: Format de l’image
+            contenu: Format de l’image produite
+          - titre: Langage
+            contenu: Langage à utiliser pour la réponse
+          - titre: Paire de dimensions
+            contenu: Axe bidimensionnel à utiliser pour la carte Par exemple, une dimension géographique et le temps
+        élémentsDeRéponse:
+          — titre: image
+      LinkToSdi:
+        titre: Relier le service
+        refLeg: '-PartA-Section4'
+        rôle: |
+          Permet à une autorité publique ou un tiers de déclarer un service de consultation de ses ressources
+          par l’intermédiaire du service de consultation de l’État membre tout en maintenant la capacité de consultation
+          chez l’autorité publique ou le tiers
+        paramètresDeDemande:
+          - titre: informations
+            contenu: |
+              fournit toutes les informations concernant un service de consultation d’une autorité publique ou d’un tiers
+              conforme au présent règlement permettant au service de consultation de l’État membre d’accéder à une carte
+              de ce service de consultation d’une autorité publique ou d’un tiers et de l’assembler avec d’autres cartes.
+        élémentsDeRéponse:
+    exigences:
+      - titre: Systèmes de coordonnées
+        refLeg: '-PartB-num1'
+        contenu: |
+          Un système de coordonnées unique sera utilisé pour consulter les couches simultanément. Le service de
+          consultation prend en charge au moins les systèmes de données mentionnés à l’annexe I, point 1, de la
+          directive 2007/2/CE.
+      - titre: Format de l’image
+        refLeg: '-PartB-num2'
+        contenu: |
+          Le service de consultation doit prendre en charge au moins un des formats d’image suivants:
+            — le format Portable Network Graphics (PNG),
+            — le format Graphics Interchange (GIF), sans compression.
+  download:
+    refLeg: '#AnnexIV'
+    opérations:
+      GetCapabilities:
+        titre: Accéder aux métadonnées du service
+        refLeg: '-PartA-Section2'
+        rôle: |
+          Fournit toutes les informations nécessaires concernant le service et les séries de données géographiques 
+          disponibles et décrit les capacités du service.
+        paramètresDeDemande:
+          - titre: langage
+            contenu: langage naturel qui sera utilisé pour le contenu de la réponse
+        élémentsDeRéponse:
+          — titre: métadonnées du service de téléchargement
+            contenu: au moins les éléments de métadonnées Inspire du service de téléchargement
+          — titre: métadonnées des opérations
+            contenu: |
+              métadonnées concernant les opérations effectuées par le service de téléchargement.
+              Ils décrivent chaque opération, en donnant au minimum une description des données échangées et l'adresse
+              réseau.
+          — titre: langage de réponse
+            contenu: |
+              le langage naturel utilisé dans les paramètres de la réponse à l'opération
+          — titre: langages pris en charge
+            contenu: |
+              la liste des langages naturels pouvant être pris en charge par le service de téléchargement
+          — titre: métadonnées des séries de données géographiques
+            contenu: |
+              Les éléments de métadonnées Inspire des séries de données géographiques disponibles doivent être fournis.
+              En outre, pour chaque série de données géographiques, la liste de référentiels de coordonnées visés au
+              règlement (UE) no 1089/2010 qui sont disponibles doit également être fournie.
+      GetDataset:
+        titre: Accéder à une série de données géographiques
+        refLeg: '-PartA-Section3'
+        rôle: Permet de récupérer une série de données géographiques.
+        paramètresDeDemande:
+          - titre: langage
+            contenu: le langage naturel demandé pour la série de données géographiques
+          - titre: identificateur de la série de données géographiques
+            contenu: l'identificateur unique de la ressource de la série de données géographiques
+          - titre: référentiel de coordonnées
+            contenu: |
+              l'un des référentiels de coordonnées inclus dans la liste des référentiels de coordonnées disponibles
+              décrits dans l'élément de réponse 'métadonnées des séries de données géographiques' à l'opération
+              'Accéder à des métadonnées du service de téléchargement'
+        élémentsDeRéponse:
+          - titre: série de données géographiques
+            contenu: |
+              la série de données géographiques demandée, dans la langue demandée et dans le référentiel de coordonnées
+              demandé.
+      DescribeDataset:
+        titre: Décrire une série de données géographiques
+        refLeg: '-PartA-Section4'
+        rôle: |
+          Renvoie la description de tous les types d'objets géographiques contenus dans la série de données géographiques.
+        paramètresDeDemande:
+          - titre: langage
+            contenu: le langage naturel demandé pour la série de données géographiques
+          - titre: identificateur de la série de données géographiques
+            contenu: l'identificateur unique de la ressource de la série de données géographiques
+        élémentsDeRéponse:
+          - titre: description des objets géographiques
+            contenu: |
+              la description des objets géographiques figurant dans la série de données géographiques demandée,
+              dans la langue demandée.
+      LinkToSdi:
+        titre: relier un service de téléchargement
+        refLeg: '-PartA-Section5'
+        rôle: |
+          Permet à une autorité publique ou à un tiers de déclarer la disponibilité d'un service de téléchargement
+          pour le téléchargement de séries de données géographiques ou, lorsque cela est possible, d'objets géographiques,
+          par le service de téléchargement de l'État membre, tout en maintenant la capacité de téléchargement
+          chez l'autorité publique ou le tiers.
+        paramètresDeDemande:
+          - titre: informations
+            contenu: |
+              toutes les informations relatives au service de téléchargement d'une autorité publique ou d'un tiers
+              conforme au présent règlement et permet au service de téléchargement de l'État membre de donner accès
+              aux séries de données géographiques et, lorsque cela est possible, aux objets géographiques provenant
+              du service de téléchargement de l'autorité publique ou du tiers.
+        élémentsDeRéponse:
+    optionalOpérations:
+      GetFeature:
+        titre: Accéder à un objet géographique
+        refLeg: '-PartB-Section7'
+        rôle: Permet la récupération d'objets géographiques sur la base d'une interrogation.
+        paramètresDeDemande:
+          - titre: langage
+            contenu: le langage naturel demandé pour la série de données géographiques
+          - titre: identificateur de la série de données géographiques
+            contenu: l'identificateur unique de la ressource de la série de données géographiques
+          - titre: référentiel de coordonnées
+            contenu: |
+              l'un des référentiels de coordonnées inclus dans la liste des référentiels de coordonnées disponibles
+              décrits dans l'élément de réponse 'métadonnées des séries de données géographiques' à l'opération
+              'Accéder à des métadonnées du service de téléchargement'
+          - titre: interrogation
+            contenu: |
+              combinaison des critères de recherche énumérés à la section critèresDeRecherche de ce document au moyen
+              des opérateurs logiques et de comparaison.
+            critèresDeRecherche:
+             — identificateur unique de la ressource de la série de données géographiques,
+             — tous les attributs essentiels pertinents et les liens entre les objets géographiques définis dans le règlement (UE) no 1089/2010, en particulier l'identificateur unique de l'objet géographique et les caractéristiques ayant trait à la dimension temporelle, notamment la date de mise à jour,
+             — rectangle de délimitation, exprimé dans l'un des référentiels de coordonnées énumérés au règlement (UE) no 1089/2010,
+             — thème de données géographiques.
+        élémentsDeRéponse:
+          - titre: ensemble d'objets géographiques
+            contenu: |
+              l'ensemble d'objets géographiques qui est conforme au règlement (UE) no 1089/2010 et remplit les critères
+              de recherche précisés dans l'interrogation, dans la langue demandée et dans le référentiel de coordonnées
+              demandé.
+          - titre: métadonnées de l'ensemble d'objets géographiques
+            contenu: |
+              contient au moins les éléments de métadonnées Inspire de l'ensemble d'objets géographiques.
+      DescribeFeatureType:
+        titre: Décrire un type d'objet géographique
+        refLeg: '-PartB-Section8'
+        rôle: Renvoie la description des types spécifiés d'objets géographiques.
+        paramètresDeDemande:
+          - titre: langage
+            contenu: le langage naturel demandé pour la description du type d'objet géographique.
+          - titre: type d'objet géographique
+            contenu: |
+              la dénomination linguistiquement neutre du type d'objet géographique prévue par le règlement (UE) no 1089/2010.
+              Lorsque le paramètre n'est pas fourni, tous les types d'objets géographiques sont présumés avoir été
+              sélectionnés.
+        élémentsDeRéponse:
+          - titre: description du type d'objet géographique
+            contenu: la description du type d'objet géographique conformément au règlement (UE) no 1089/2010.
+
+

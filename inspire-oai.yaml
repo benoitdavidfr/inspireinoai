@@ -1,0 +1,123 @@
+titre: spécification d'une IDG Inspire en OAI
+
+Une IDG Inspire est composée de différentes applications chacune spécialisée sur un sujet ou un périmètre particulier.
+Chacune de ces application:
+  - expose ses données, ses métadonnées et ses cartes au travers de services de téléchargement et de consultation
+  - définit pour chaque ressource exposée (SD ou service) un URI identifiant cette ressource
+  - correspond à 1 basepath, ex: http://urba.geoapi.fr, noté {basepath}
+
+Une IDG Inspire est définie par un service de recherche qui répertorie ses ressources exposées (SD et services).
+
+Pour chaque application, les services de téléchargement gèrent les données et les métadonnées associées.
+Les services de consultation exploitent a priori les données gérées par les services de téléchargement.
+Le remplissage/mise à jour du service de recherche est effectué au moyen des services de téléchargement et de
+consultation.
+
+Dans toutes les requêtes:
+ - la langue demandée est définie par l'en-tête Accept-Language de la requête HTTP
+ - la langue utilisée est définie par l'en-tête Content-Language de la réponse HTTP
+Dans certaines requêtes:
+ - le format demandé est défini par l'en-tête Accept de la requête HTTP
+ - le format utilisé est défini par l'en-tête Content-Type de la réponse HTTP
+  
+Chaque SD correspond à une URI de la forme:
+  {basepath}/{dsid} où {dsid} est un identifiant court de la SD (par ex. un MD5)
+La résolution de cette URI renvoie la fiche de MD de la SD ou une erreur 410 si la SD a existé et a été effacée
+ou une erreur 404 si la SD n'a jamais existé.
+Chaque SD correspond à un service de téléchargement qui expose uniquement cette SD.
+Ce mécanisme:
+  - simplifie les liens entre MDD et MDS
+  - règle les difficultés de performance rencontrées lorsqu'un service expose de nombreuses séries de données
+Pour les téléchargements, la géométrie est proposée en coordonnées géographiques ETRS89 ou équivalent ITRS outre-mer.
+
+Un service de téléchargement est identifié par un URI de la forme:
+  {basepath}/download/{dsid}
+  La résolution de cet URI renvoie le document de "capacités" du service correspondant à l'opération "Accéder aux
+  métadonnées du service" qui comprend:
+    — les métadonnées du service
+    — les métadonnées des opérations
+    — la liste des langages pris en charge
+    — l'URL des métadonnées de la SD exposée par le service
+  Les opérations correspondent aux points d'entrée GET:
+    {basepath}/describe/{dsid}
+      Renvoie la liste des descriptions de chacun des types d'objets géographiques contenus dans la SD
+    {basepath}/describe/{dsid}/{sot}
+      renvoie la description du type d'objet {sot} contenu dans la SD
+    {basepath}/download/{dsid}
+      renvoie tous les objets de la SD
+    {basepath}/download/{dsid}/{sot}
+      renvoie tous les objets du type d'objets géographiques {sot} de la SD
+    {basepath}/download/{dsid}/{sot}?query={query}
+      renvoie les objets du type d'objets géographiques {sot} de la SD satisfaisant à la requête {query}
+
+Les services de consultation exposent chacun a priori plusieurs SD et une application peut proposer un ou plusieurs
+services de consultation. Une SD peut être exposée par plusieurs services de consultation.
+Le CRS par défaut d'un service de consultation est le Web Mercator.
+
+Un service de consultation est identifié par un URI de la forme:
+  {basepath}/view/{viewid}
+  où {viewid} identifie un service de consultation
+  La résolution de cet URI renvoie un document de "capacités" du service correspondant à l'opération "Accéder aux
+  métadonnées du service" qui comprend:
+    — les métadonnées du service
+    — les métadonnées des opérations
+    — la liste des langages pris en charge
+    — les métadonnées des couches
+  L'opération correspond au point d'entrée en GET:
+    {basepath}/getMap/{viewid}?layers&styles&crs&bbox&width&height&format
+      renvoie la carte correspondant aux paramètres qui sont tous optionnels ; par défaut:
+        layers: liste de toutes les couches disponibles
+        styles: styles par défaut de chaque couche
+        crs: Web Mercator
+        bbox: l'extension maximum des couches sélectionnées
+        witdh,height: 512 pour la plus grande en respectant le ratio dx/dy
+      
+Un service de recherche est exposé par un point d'entrée:
+  {basepath}/
+  L'URI du service est l'URL correspondant à ce chemin
+  La résolution de cette URI renvoie un document de "capacités" du service correspondant à l'opération "Accéder aux
+  métadonnées du service" qui comprend:
+    — les métadonnées du service
+    — les métadonnées des opérations
+    — la liste des langages pris en charge
+  Les opérations correspondent aux points d'entrée:
+    /?query={query}
+      renvoie les MD satisfaisant la requête
+    /publish?uri={uri} (POST)
+      si {uri} correspond à une SD ou un service alors:
+        si {uri} existe déjà dans le catalogue alors:
+         la fiche de MD correspondante est mise à jour
+        sinon:
+         la fiche de MD correspondante est insérée dans le catalogue
+        fin_si
+      sinon si {uri} renvoie l'erreur 410 et que {uri} existe dans le catalogue alors:
+        la fiche correspondante est effacée
+      sinon:
+        aucune action n'est effectuée et la requête renvoie l'erreur 404.
+      fin_si
+      Cette opération permet d'insérer, mettre à jour ou détruire une fiche de MD dans le catalogue sans
+      qu'aucune authentification ne soit nécessaire car les infos sont fournies par l'application.
+
+L'IDG française est définie par un service de recherche particulier, ex http://geocat.fr/
+
+L'opération LinkToSdi pour un service identifié par l'uri URI est effectuée par l'appel de
+  http://geocat.fr/publish?uri=URI
+
+Exemples:
+- IDG composée de 2 applications correspondant respectivement aux chemins http://urba.geoapi.fr et 
+  http://risque.geoapi.fr et identifiée par le service de recherche http://search.geoapi.fr
+  Chaque SD urba est identifiée par un URI http://urba.geoapi.fr/{dsid} où dsid est un identifiant court de la SD
+  Chaque SD risque est identifiée par un URI http://risque.geoapi.fr/{dsid}
+  L'appli urba expose ses services de téléchargement à l'URI http://urba.geoapi.fr/{dsid}/download et son service
+  de consultation à l'URI http://urba.geoapi.fr/view
+- une plateforme Prodige correspondant à l'URL: http:/prodige.org exposera
+  - un service de recherche : http://prodige.org/
+  - un service de téléchargement par SD : http://prodige.org/{dsid}/download
+  - des services de consultation : http://prodige.org/ddt44 et http://prodige.org/risques
+  
+  
+La spécification OAI d'une IDG peut être utilisée de 3 manières différentes:
+  - une application peut fournir nativement les services de téléchargement et de consutation
+  - un proxy peut être mis en place pour exposer une IDG implémentée avec une techno différente,
+    ex: http://urba.geoapi.fr
+  - à l'inverse, on peut aussi créer une API conforme aux guides d'implémentation pour exposer une IDG spécifiée en OAI.
