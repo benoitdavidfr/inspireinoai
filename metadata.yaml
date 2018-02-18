@@ -3,7 +3,7 @@ doc:
   to be completed
 journal: |
   18/2/2018:
-    pertial definition, to be completed
+    partial definition, to be completed
 definitions:
   metadata:
     type: object

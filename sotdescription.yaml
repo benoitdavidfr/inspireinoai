@@ -1,0 +1,10 @@
+title: Swagger definitions for operation metadata (or capabilities)
+doc:
+  Describes the operations of the Download/View Service and shall contain as a minimum a description of the data
+  exchanged and the network address of each operation.
+journal: |
+  18/2/2018:
+    first finalized version
+definitions:
+  sotDescription:
+    type: object
