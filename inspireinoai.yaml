@@ -25,7 +25,7 @@ info:
 #  - http
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
-basePath: /benoitdavidfr/inspireappli/0.1.0
+basePath: /benoitdavidfr/inspireinoai/0.1.0
 schemes:
  - https
  - http
@@ -118,7 +118,7 @@ paths:
         '200':
           description: the service metadata
           schema:
-            $ref: '#/definitions/downloadCapabilities'
+            $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/servicecap.yaml#/definitions/downloadCapabilities'
   '/download/{dsid}/describe':
     get:
       tags:
@@ -249,7 +249,7 @@ paths:
         '200':
           description: the service metadata
           schema:
-            $ref: '#/definitions/viewCapabilities'
+            $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/servicecap.yaml#/definitions/viewCapabilities'
   '/view/{viewid}/getMap':
     get:
       tags:
@@ -306,110 +306,6 @@ paths:
           description: the map
 
 definitions:
-  downloadCapabilities:
-    type: object
-    description: >-
-      Response of the Get Download Service Metadata request (Annex IV Part A Section 2.2)
-    properties:
-      serviceMetadata:
-        description: >-
-          Download Service Metadata (2.2.1.)
-          At least contain the INSPIRE metadata elements of the Download Service.
-        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml#/definitions/metadata'
-      operationsMetadata:
-        description: >-
-          Operations Metadata (2.2.2.)
-          Provides metadata about the operations implemented by the Download Service. It shall at least provide a
-          description of each operation, including as a minimum a description of the data exchanged and the network
-          address.
-        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/servicecap.yaml#/definitions/operationCap'
-      supportedLanguages:
-        description: >-
-          Supported languages (2.2.3.b)
-          The list of the natural languages supported by the Service coded using ISO 639-2 alpha-3.
-          
-          The response language (2.2.3.a) is given by the Content-Language HTTP response header
-        type: array
-        items: {type: string}
-        example: ['fre','eng']
-      datasetMetadata:
-        description: >-
-          Spatial Data Sets Metadata (2.2.4.)
-          The INSPIRE metadata elements of the available Spatial Data Sets shall be provided. In addition,
-          for each Spatial Data Set, the list of those Coordinate Reference Systems referred to in Regulation (EU)
-          No 1089/2010 which are available shall also be provided.
-          
-          This property is structured with an array of items, one per available dataset, each one defined by the URI
-          of the dataset pointing to its metadata, and the list of available CRS, each one defined by an URI
-        type: array
-        items:
-          description: one item per dataset
-          type: object
-          properties:
-            uri: {type: string}
-            crs:
-              type: array
-              items:
-                description: Each item is an URI defining a CRS in which the dataset is available
-                type: string
-                
-  viewCapabilities:
-    type: object
-    description: >-
-      Response of the Get View Service Metadata request (Annex III Part A Section 2.2)
-    properties:
-      serviceMetadata:
-        description: >-
-          View Service Metadata (2.2.1.)
-          At least contain the INSPIRE metadata elements of the View Service.
-        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml#/definitions/metadata'
-      operationsMetadata:
-        description: >-
-          Operations Metadata (2.2.2.)
-          Describes the operations of the View Service and shall contain as a minimum a description of the data
-          exchanged and the network address of each operation.
-        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/servicecap.yaml#/definitions/operationCap'
-      supportedLanguages:
-        description: >-
-          Supported languages (2.2.3.b)
-          The list of the natural languages supported by the Service coded using ISO 639-2 alpha-3.
-          
-          The response language (2.2.3.a) is given by the Content-Language HTTP response header
-        type: array
-        items: {type: string}
-        example: ['fre','eng']
-      layersMetadata:
-        description: >-
-          Layers Metadata  (2.2.4.)
-        type: array
-        items:
-          description: one item per layer
-          type: object
-          properties:
-            title:
-              description: >-
-                Resource Title
-                The title of the layer, used for human communication, for presentation of the layer, e.g. in a menu
-              type: string
-            abstract:
-              description: >-
-                Resource Abstract
-                Layer abstract
-              type: string
-            keywords:
-              description: >-
-                Keyword
-                Layer Additional keywords
-              type: array
-              items: {type: string}
-            bbox:
-              description: >-
-                Geographic Bounding Box
-                The minimum bounding rectangle in all supported Coordinate Reference Systems of the area covered by the
-                layer
-              type: array
-              items: {type: string}
-
   sotDescription:
     type: object
 
