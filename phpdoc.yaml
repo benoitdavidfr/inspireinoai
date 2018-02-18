@@ -16,6 +16,7 @@ htmlFiles:
   - /geoapi/inspireoai/inspire-oai.yaml
   - /geoapi/inspireoai/inspire-appli.yaml
   - /geoapi/inspireoai/metadata.yaml
+  - /geoapi/inspireoai/operationcap.yaml
 phpScripts:
 phpIncludes:
 submodules:
