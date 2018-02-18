@@ -6,7 +6,7 @@ journal: |
   18/2/2018:
     pertial definition, to be completed
 definitions:
-  operations:
+  operationCap:
     type: object
     description: >-
       extract of the swagger structure for the service

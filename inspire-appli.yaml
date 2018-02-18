@@ -315,14 +315,14 @@ definitions:
         description: >-
           Download Service Metadata (2.2.1.)
           At least contain the INSPIRE metadata elements of the Download Service.
-            $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/metadata.yaml#/definitions/metadata'
+        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/metadata.yaml#/definitions/metadata'
       operationsMetadata:
         description: >-
           Operations Metadata (2.2.2.)
           Provides metadata about the operations implemented by the Download Service. It shall at least provide a
           description of each operation, including as a minimum a description of the data exchanged and the network
           address.
-        $ref: '#/definitions/operations'
+        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/operationcap.yaml#/definitions/operationCap'
       supportedLanguages:
         description: >-
           Supported languages (2.2.3.b)
@@ -353,7 +353,6 @@ definitions:
                 description: Each item is an URI defining a CRS in which the dataset is available
                 type: string
 
-
   sotDescription:
     type: object
 
@@ -366,13 +365,14 @@ definitions:
         description: >-
           View Service Metadata (2.2.1.)
           At least contain the INSPIRE metadata elements of the View Service.
-            $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/metadata.yaml#/definitions/metadata'
+        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/metadata.yaml#/definitions/metadata'
       operationsMetadata:
         description: >-
           Operations Metadata (2.2.2.)
           Describes the operations of the View Service and shall contain as a minimum a description of the data
           exchanged and the network address of each operation.
         $ref: '#/definitions/operations'
+        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/operationcap.yaml#/definitions/operationCap'
       supportedLanguages:
         description: >-
           Supported languages (2.2.3.b)
