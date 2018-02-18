@@ -308,7 +308,7 @@ serviceTypes:
               aux séries de données géographiques et, lorsque cela est possible, aux objets géographiques provenant
               du service de téléchargement de l'autorité publique ou du tiers.
         élémentsDeRéponse:
-    optionalOpérations:
+    opérationsOptionnelles:
       GetFeature:
         titre: Accéder à un objet géographique
         refLeg: '-PartB-Section7'
