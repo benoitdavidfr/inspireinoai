@@ -3,7 +3,8 @@ doc:
   Describes the operations of the Download/View Service and shall contain as a minimum a description of the data
   exchanged and the network address of each operation.
         $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/metadata.yaml#/definitions/metadata'
-        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/operationcap.yaml#/definitions/operationCap'
+    $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/servicecap.yaml#/definitions/downloadCapabilities'
+    $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/servicecap.yaml#/definitions/viewCapabilities'
 journal: |
   18/2/2018:
     pertial definition, to be completed
@@ -182,7 +183,7 @@ definitions:
                 httpStatusCode: "200"
                 description: "the service metadata"
                 schema:
-                  $ref: "#/definitions/downloadCapabilities"
+#                  $ref: "#/definitions/downloadCapabilities"
         /download/{dsid}/describe:
           get:
             tags:
