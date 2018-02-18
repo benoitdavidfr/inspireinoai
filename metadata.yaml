@@ -56,7 +56,7 @@ definitions:
         type: string
     example:
       title: the resource title
-      abstract: an abstract of fhe resource
+      abstract: an abstract of the resource
       type: dataset
       locator:
         - http://example.org/info

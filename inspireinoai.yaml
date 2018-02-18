@@ -10,14 +10,18 @@ info:
     implementing the [Inspire EU directive](http://data.europa.eu/eli/dir/2007/2/oj).
     
     With the exception of the API documentation and of the dataset URI, each path corresponds to an operation defined
-    by the regulation, its summary gives the title of the operation as defined by the regulation and its description
-    gives the role of the operation as defined by the regulation followed between parentheses by the reference of the
-    operation in the regulation.
+    by the regulation, its summary contains the title of the operation used in the regulation and its description
+    countains the role of the operation defined by the regulation followed between parentheses by the reference of
+    the operation in the regulation.
     
     For each operation:
       * the requested natural language is defined by the Accept-Language HTTP request header,
-      * the natural language used in the response is defined by the Content-Language HTTP response header,
-    
+      * the natural language used in the response is defined by the Content-Language HTTP response header.
+
+    To be done:
+      * metadata elements
+      * specification of queries
+      * SOT description
 # Added by API Auto Mocking Plugin
 # host: inspireappli.geoapi.fr
 # basePath: /
@@ -96,14 +100,18 @@ paths:
           description: the dataset metadata
           schema:
             $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml#/definitions/metadata'
+        '404':
+          description: no dataset corresponds to this URI
+        '410':
+          description: the dataset corresponding to this URI doesn't exist anymore
   '/download/{dsid}':
     get:
       tags:
         - download service
       summary: Get Download Service Metadata
       description: >-
-        Provides all necessary information about the service, the available Spatial Data Sets, and describes the service
-        capabilities.
+        Provides all necessary information about the service, the available Spatial Data Sets, and describes
+        the service capabilities.
         (Annex IV, Part A, Section 2)
       operationId: getDownloadServiceMetadata
       produces:
@@ -151,8 +159,10 @@ paths:
       description: >-
         Retrieves of a Spatial Data Set.
         (Annex IV, Part A, Section 3)
-          The only format provided is GeoJSON.
-          The only CRS proposed is ETRS89 or equivalent CRS over-seas.
+          The only proposed format is [GeoJSON](https://tools.ietf.org/html/rfc7946).
+        All proposed CRS must define the two first coordinates as geographical coordinates in decimal degrees.
+        Because GeoJSON imposes the (lon,lat) order, the axis order of the CRS is not taken into account.
+        It is recomanded to expose only one CRS; in this case the crs parameter is optional.
       operationId: getSpatialDataSet
       produces:
         - application/json
@@ -162,11 +172,16 @@ paths:
           description: ID of the dataset
           required: true
           type: string
+        - name: crs
+          in: query
+          description: URI of the CRS
+          required: false
+          type: string
       responses:
         '200':
           description: a GeoJSON FeatureCollection with the features of the spatial data set
           schema:
-            $ref: '#/definitions/FeatureCollection'
+            $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/featurecollection.yaml#/definitions/FeatureCollection'
   '/download/{dsid}/describe/{sot}':
     get:
       tags:
@@ -206,6 +221,10 @@ paths:
       description: >-
         Retrieval of Spatial Objects based upon a query.
         (Annex IV, Part B, Section 7)
+          The only proposed format is [GeoJSON](https://tools.ietf.org/html/rfc7946).
+        All proposed CRS must define the two first coordinates as geographical coordinates in decimal degrees.
+        Because GeoJSON imposes the (lon,lat) order, the axis order of the CRS is not taken into account.
+        It is recomanded to expose only one CRS; in this case the crs parameter is optional.
       operationId: getSpatialObject
       produces:
         - application/json
@@ -222,11 +241,21 @@ paths:
           type: array
           items:
             type: string
+        - name: crs
+          in: query
+          description: URI of the CRS
+          required: false
+          type: string
+        - name: query
+          in: query
+          description: query defining a selection of the features of the spatial data set
+          required: false
+          type: string
       responses:
         '200':
           description: a GeoJSON FeatureCollection with the selected features of the spatial data set
           schema:
-            $ref: '#/definitions/FeatureCollection'
+            $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/featurecollection.yaml#/definitions/FeatureCollection'
   '/view/{viewid}':
     get:
       tags:
@@ -283,8 +312,9 @@ paths:
             type: string
         - name: crs
           in: query
-          description: Coordinate Reference System of the map
+          description: "Coordinate Reference System of the map using an EPSG code, example: 'EPSG:2154'"
           type: string
+          
         - name: bbox
           in: query
           description: >-
@@ -292,7 +322,7 @@ paths:
             Coordinate Reference System.
           type: array
           items:
-            type: string
+            type: number
         - name: witdh
           in: query
           description: The map width in pixels
@@ -346,12 +376,17 @@ definitions:
           description: one item per dataset
           type: object
           properties:
-            uri: {type: string}
+            datasetUri: {type: string}
             crs:
               type: array
               items:
                 description: Each item is an URI defining a CRS in which the dataset is available
                 type: string
+        example:
+          - datasetUri: http://urba.geoapi.fr/345687987
+            crs:
+              - http://www.opengis.net/def/crs/EPSG/0/4258
+              - http://www.opengis.net/def/crs/EPSG/0/7409
 
   viewCapabilities:
     type: object
@@ -383,63 +418,91 @@ definitions:
           Layers Metadata  (2.2.4.)
         type: array
         items:
-          description: one item per layer
+          $ref: '#/definitions/layerMetadata'
+            
+  layerMetadata:
+    description: >-
+      Metadata of a layer of a view service defined in the response of the Get View Service Metadata request
+      (Annex III Part A Section 2.2.4, tables 3 and 4)
+      
+    type: object
+    properties:
+      title:
+        description: >-
+          Resource Title
+          The title of the layer, used for human communication, for presentation of the layer, e.g. in a menu
+        type: string
+      abstract:
+        description: >-
+          Resource Abstract
+          Layer abstract
+        type: string
+      keywords:
+        description: >-
+          Keyword
+          Layer Additional keywords
+        type: array
+        items: {type: string}
+      bbox:
+        description: >-
+          Geographic Bounding Box
+          The minimum bounding rectangle in all supported Coordinate Reference Systems of the area covered by the layer
+        type: array
+        items:
+          description: one bbox in one of the CRS
           type: object
           properties:
-            title:
-              description: >-
-                Resource Title
-                The title of the layer, used for human communication, for presentation of the layer, e.g. in a menu
+            crs:
+              description: Coordinate Reference System of the map using EPSG codes
               type: string
-            abstract:
-              description: >-
-                Resource Abstract
-                Layer abstract
-              type: string
-            keywords:
-              description: >-
-                Keyword
-                Layer Additional keywords
+            min:
+              description: the min for each of the two coordinates in the CRS
               type: array
-              items: {type: string}
-            bbox:
-              description: >-
-                Geographic Bounding Box
-                The minimum bounding rectangle in all supported Coordinate Reference Systems of the area covered by the
-                layer
+              items: { type: number }
+            max:
+              description: the max for each of the two coordinates in the CRS
               type: array
-              items: {type: string}
-
-  FeatureCollection:
-    type: object
-    required:
-      - type
-      - features
-    properties:
-      type:
+              items: { type: number }
+          example: { crs: 'EPSG:2154', min: [ -45234.45, 6745678.45 ], max: [ 234567.89, 6890000.00 ] }
+      uri:
+        description: >-
+          Unique Resource Identifier
+          The Unique Resource Identifier of the resource used to create the layer
         type: string
-        description: the 'FeatureCollection' value
-        example: FeatureCollection
-      features:
+      name:
+        description: >-
+          Name
+          Harmonised name of the layer
+        type: string
+      crs:
+        description: >-
+          Coordinate Reference Systems
+          List of Coordinate Reference Systems in which the layer is available
+          Coordinate Reference Systems are defined using their EPSG code
         type: array
-        description: list of Features
+        items: { type: string }
+      styles:
+        description: >-
+          Styles
+          List of the rendering styles available for the layer.
+          A style shall be composed of a title and a unique identifier
+        type: array
         items:
           type: object
-          required:
-            - type
-            - properties
-            - geometry
           properties:
-            type:
-              type: string
-              description: the 'Feature' value
-              example: Feature
-            properties:
-              type: object
-              description: properties of the feature
-            geometry:
-              type: object
-              description: geometry of the feature
+            title: { type: string }
+            uid: { type: string }
+            legendUrls:
+              type: array
+              items:
+                type: object
+                properties:
+                  language:
+                    description: coded using ISO 639-2 alpha-3.
+                    type: string
+                  legendUrl:
+                    description: URL of the legend for the style and the language
+                    type: string
 
 externalDocs:
   description: Documentation of the API
