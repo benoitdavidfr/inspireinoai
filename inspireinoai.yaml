@@ -142,7 +142,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/sotDescription'
+              $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/sotdescription.yaml#/definitions/sotDescription'
   '/download/{dsid}/get':
     get:
       tags:
@@ -197,7 +197,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/sotDescription'
+              $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/sotdescription.yaml#/definitions/sotDescription'
   '/download/{dsid}/get/{sot}':
     get:
       tags:
@@ -352,7 +352,7 @@ definitions:
               items:
                 description: Each item is an URI defining a CRS in which the dataset is available
                 type: string
-                
+
   viewCapabilities:
     type: object
     description: >-
@@ -409,9 +409,6 @@ definitions:
                 layer
               type: array
               items: {type: string}
-              
-  sotDescription:
-    type: object
 
   FeatureCollection:
     type: object

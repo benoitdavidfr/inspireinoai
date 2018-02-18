@@ -1,10 +1,9 @@
-title: Swagger definitions for operation metadata (or capabilities)
+title: Swagger definition for the description of Spatial Objects types
 doc:
-  Describes the operations of the Download/View Service and shall contain as a minimum a description of the data
-  exchanged and the network address of each operation.
+  The description of the spatial object types, in conformity with Regulation (EU) No 1089/2010.
 journal: |
   18/2/2018:
-    first finalized version
+    first minimal version
 definitions:
   sotDescription:
     type: object

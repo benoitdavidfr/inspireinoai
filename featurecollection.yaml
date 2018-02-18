@@ -1,0 +1,36 @@
+title: Swagger definition for GeoJSON FeatureCollection
+doc:
+journal: |
+  18/2/2018:
+    first finalized version
+definitions:
+  FeatureCollection:
+    type: object
+    required:
+      - type
+      - features
+    properties:
+      type:
+        type: string
+        description: the 'FeatureCollection' value
+        example: FeatureCollection
+      features:
+        type: array
+        description: list of Features
+        items:
+          type: object
+          required:
+            - type
+            - properties
+            - geometry
+          properties:
+            type:
+              type: string
+              description: the 'Feature' value
+              example: Feature
+            properties:
+              type: object
+              description: properties of the feature
+            geometry:
+              type: object
+              description: geometry of the feature
