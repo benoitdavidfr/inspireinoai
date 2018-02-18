@@ -2,9 +2,6 @@ title: Swagger definitions for Inspire service metadata (or capabilities)
 doc:
   Describes the operations of the Download/View Service and shall contain as a minimum a description of the data
   exchanged and the network address of each operation.
-        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/metadata.yaml#/definitions/metadata'
-    $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/servicecap.yaml#/definitions/downloadCapabilities'
-    $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/servicecap.yaml#/definitions/viewCapabilities'
 journal: |
   18/2/2018:
     pertial definition, to be completed
