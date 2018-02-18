@@ -2,7 +2,22 @@ swagger: '2.0'
 info:
   version: '0.1.0'
   title: 'Inspire download and view services'
-  description: 'Specification of download and view services defined by Inspire EU directive'
+  description: >-
+    WORK IN PROGRESS
+    
+    Specification of download and view services defined by 
+    [Inspire EU Regulation 976/2009](http://data.europa.eu/eli/reg/2009/976/2014-12-31)
+    implementing the [Inspire EU directive](http://data.europa.eu/eli/dir/2007/2/oj).
+    
+    With the exception of the API documentation and of the dataset URI, each path corresponds to an operation defined
+    by the regulation, its summary gives the title of the operation as defined by the regulation and its description
+    gives the role of the operation as defined by the regulation followed between parentheses by the reference of the
+    operation in the regulation.
+    
+    For each operation:
+      * the requested natural language is defined by the Accept-Language HTTP request header,
+      * the natural language used in the response is defined by the Content-Language HTTP response header,
+    
 # Added by API Auto Mocking Plugin
 # host: inspireappli.geoapi.fr
 # basePath: /
@@ -61,12 +76,36 @@ paths:
       responses:
         '200':
           description: opération réussie
+  '/{dsid}':
+    get:
+      tags:
+        - dataset URI
+      summary: the dataset URI returns the dataset metadata
+      description: >-
+      operationId: datasetUri
+      produces:
+        - application/json
+      parameters:
+        - name: dsid
+          in: path
+          description: ID of the dataset
+          required: true
+          type: string
+      responses:
+        '200':
+          description: the dataset metadata
+          schema:
+            $ref: '#/definitions/metadata'
   '/download/{dsid}':
     get:
       tags:
         - download service
       summary: Get Download Service Metadata
-      operationId: download
+      description: >-
+        Provides all necessary information about the service, the available Spatial Data Sets, and describes the service
+        capabilities.
+        (Annex IV, Part A, Section 2)
+      operationId: getDownloadServiceMetadata
       produces:
         - application/json
       parameters:
@@ -87,7 +126,8 @@ paths:
       summary: Describe Spatial Data Set
       description: >-
         Returns the description of all the types of Spatial Objects contained in the Spatial Data Set.
-      operationId: describe
+        (Annex IV, Part A, Section 4)
+      operationId: describeSpatialDataSet
       produces:
         - application/json
       parameters:
@@ -109,8 +149,11 @@ paths:
         - download service
       summary: Get Spatial Data Set
       description: >-
-        Retrives of a Spatial Data Set.
-      operationId: downloadDataset
+        Retrieves of a Spatial Data Set.
+        (Annex IV, Part A, Section 3)
+          The only format provided is GeoJSON.
+          The only CRS proposed is ETRS89 or equivalent CRS over-seas.
+      operationId: getSpatialDataSet
       produces:
         - application/json
       parameters:
@@ -121,16 +164,9 @@ paths:
           type: string
       responses:
         '200':
-          description: features of the spatial data set structured with one FeatureCollection per Spatial Object type
+          description: a GeoJSON FeatureCollection with the features of the spatial data set
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                sot:
-                  type: string
-                featureCollection:
-                  $ref: '#/definitions/FeatureCollection'
+            $ref: '#/definitions/FeatureCollection'
   '/download/{dsid}/describe/{sot}':
     get:
       tags:
@@ -138,7 +174,8 @@ paths:
       summary: Describe Spatial Object Type
       description: >-
         Returns the description of the specified Spatial Objects types
-      operationId: describeSot
+        (Annex IV, Part B, Section 8)
+      operationId: describeSpatialObjectType
       produces:
         - application/json
       parameters:
@@ -168,7 +205,8 @@ paths:
       summary: Get Spatial Object
       description: >-
         Retrieval of Spatial Objects based upon a query.
-      operationId: downloadFeatures
+        (Annex IV, Part B, Section 7)
+      operationId: getSpatialObject
       produces:
         - application/json
       parameters:
@@ -186,7 +224,7 @@ paths:
             type: string
       responses:
         '200':
-          description: features of the spatial data set structured with one FeatureCollection
+          description: a GeoJSON FeatureCollection with the selected features of the spatial data set
           schema:
             $ref: '#/definitions/FeatureCollection'
   '/view/{viewid}':
@@ -194,7 +232,10 @@ paths:
       tags:
         - view service
       summary: Get View Service Metadata
-      operationId: view
+      description: >-
+        Provides all necessary information about the service and describes service capabilities
+        (Annex III, Part A, Section 2)
+      operationId: getViewServiceMetadata
       produces:
         - text/html
         - application/json
@@ -216,7 +257,9 @@ paths:
       summary: Get Map
       description: >-
         Returns a map containing the geographic and thematic information coming from the available spatial datasets.
-        This map is an image spatially referenced
+        This map is an image spatially referenced.
+        (Annex III, Part A, Section 3)
+          The Accept http header determines the format of the image.
       operationId: getMap
       produces:
         - image/png
@@ -246,7 +289,7 @@ paths:
           in: query
           description: >-
             The 4 corner Coordinate of the two dimensional map for the selected Dimension pair and in the selected
-            Coordinate Reference System. The Accept http header is usezd to determine the format of the image.
+            Coordinate Reference System.
           type: array
           items:
             type: string
@@ -261,11 +304,48 @@ paths:
       responses:
         '200':
           description: the map
+
 definitions:
   downloadCapabilities:
     type: object
+    description: >-
+      Response of the Get Download Service Metadata request (Annex IV Part A Section 2.2)
+    properties:
+      serviceMetadata:
+        description: >-
+          Download Service Metadata (2.2.1.)
+          At least contain the INSPIRE metadata elements of the Download Service.
+        $ref: '#/definitions/metadata'
+      operationsMetadata:
+        description: >-
+          Operations Metadata (2.2.2.)
+          Provides metadata about the operations implemented by the Download Service. It shall at least provide a
+          description of each operation, including as a minimum a description of the data exchanged and the network
+          address.
+        $ref: '#/definitions/operations'
+      languages:
+        description: >-
+          Operations Metadata (2.2.2.b)
+          the Supported languages parameter containing the list of the natural languages supported by the Service.
+          Languages a coded following ISO 639-2 alpha-3
+          The response language (2.2.2.a) is given by the Content-Language HTTP response header
+        type: array
+        items:
+          type: string
+        example: ['fre','eng']
+      datasetMetadata:
+        description: >-
+          Spatial Data Sets Metadata (2.2.3.)
+          The INSPIRE metadata elements of the available Spatial Data Sets shall be provided. In addition,
+          for each Spatial Data Set, the list of those Coordinate Reference Systems referred to in Regulation (EU)
+          No 1089/2010 which are available shall also be provided.
+        $ref: '#/definitions/metadata'
+
   metadata:
     type: object
+    description: >-
+      INSPIRE metadata elements as defined in [Inspire Regulation 1205/2008](http://data.europa.eu/eli/reg/2008/1205/oj)
+        Properties correspond to elements of Part B of the annex.
     properties:
       title:
         description: >-
@@ -282,9 +362,9 @@ definitions:
       type:
         enum: [series, dataset, services]
         description: >-
-          Resource type (1.3)
-          This is the type of resource being described by the metadata.
-          The value domain of this metadata element is:
+          Resource type (1.3)  
+            This is the type of resource being described by the metadata.  
+            The value domain of this metadata element is:
             series: Spatial data set series
             dataset: Spatial data set
             services: Spatial data services
@@ -308,10 +388,204 @@ definitions:
         type: array
         items:
           type: string
+      toBeCompleted:
+        type: string
+    example:
+      title: the resource title
+      abstract: an abstract of fhe resource
+      type: dataset
+      locator:
+        - http://example.org/info
+        - http://example.org/wms
+        - http://example.org/wfs
+      uri:
+        - http://urba.geoapi.fr/35647654678
+
+  operations:
+    type: object
+    description: >-
+      extract of the swagger structure for the service
+    properties:
+      swagger: { type: string }
+      host: { type: string }
+      basePath: { type: string }
+      schemes: { type: array, items: { type: string } }
+      paths:
+        type: array
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              pathTemplate: { type: string }
+              httpVerb: { type: string }
+              summary: { type: string }
+              description: { type: string }
+              operationId: { type: string }
+              produces: { type: array, items: { type: string } }
+              parameters:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    name: { type: string }
+                    in: { type: string }
+                    description: { type: string }
+                    required: { type: boolean }
+                    type: { type: string }
+              responses:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    httpStatusCode: { type: string }
+                    description: { type: string }
+                    schema: { type: object }
+    example:
+      swagger: "2.0"
+      host: "virtserver.swaggerhub.com"
+      basePath: "/benoitdavidfr/inspireappli/0.1.0"
+      schemes:
+      - "https"
+      - "http"
+      paths:
+        -:
+          -:
+            pathTemplate: "/download/{dsid}"
+            httpVerb: "get"
+            summary: "Get Download Service Metadata"
+            description: "Provides all necessary information about the service, the available\
+              \ Spatial Data Sets, and describes the service capabilities. (Annex IV, Part\
+              \ A, Section 2)"
+            operationId: "getDownloadServiceMetadata"
+            produces:
+            - "application/json"
+            parameters:
+            - name: "dsid"
+              in: "path"
+              description: "ID of the dataset"
+              required: true
+              type: "string"
+            responses:
+              -:
+                httpStatusCode: "200"
+                description: "the service metadata"
+                schema:
+                  $ref: "#/definitions/downloadCapabilities"
+        /download/{dsid}/describe:
+          get:
+            tags:
+            - "download service"
+            summary: "Describe Spatial Data Set"
+            description: "Returns the description of all the types of Spatial Objects contained\
+              \ in the Spatial Data Set. (Annex IV, Part A, Section 4)"
+            operationId: "describeSpatialDataSet"
+            produces:
+            - "application/json"
+            parameters:
+            - name: "dsid"
+              in: "path"
+              description: "ID of the dataset"
+              required: true
+              type: "string"
+            responses:
+              200:
+                description: "description of all the types of Spatial Objects"
+                schema:
+                  type: "array"
+                  items:
+                    $ref: "#/definitions/sotDescription"
+        /download/{dsid}/get:
+          get:
+            tags:
+            - "download service"
+            summary: "Get Spatial Data Set"
+            description: "Retrieves of a Spatial Data Set. (Annex IV, Part A, Section 3)\n\
+              \  The only format provided is GeoJSON.\n  The only CRS proposed is ETRS89\
+              \ or equivalent CRS over-seas."
+            operationId: "getSpatialDataSet"
+            produces:
+            - "application/json"
+            parameters:
+            - name: "dsid"
+              in: "path"
+              description: "ID of the dataset"
+              required: true
+              type: "string"
+            responses:
+              200:
+                description: "a GeoJSON FeatureCollection with the features of the spatial\
+                  \ data set"
+                schema:
+                  $ref: "#/definitions/FeatureCollection"
+        /download/{dsid}/describe/{sot}:
+          get:
+            tags:
+            - "download service"
+            summary: "Describe Spatial Object Type"
+            description: "Returns the description of the specified Spatial Objects types\
+              \ (Annex IV, Part B, Section 8)"
+            operationId: "describeSpatialObjectType"
+            produces:
+            - "application/json"
+            parameters:
+            - name: "dsid"
+              in: "path"
+              description: "ID of the dataset"
+              required: true
+              type: "string"
+            - name: "sot"
+              in: "path"
+              description: "list of names of the Spatial Object Types"
+              required: true
+              type: "array"
+              items:
+                type: "string"
+              collectionFormat: "csv"
+            responses:
+              200:
+                description: "description of the specified Spatial Objects types"
+                schema:
+                  type: "array"
+                  items:
+                    $ref: "#/definitions/sotDescription"
+        /download/{dsid}/get/{sot}:
+          get:
+            tags:
+            - "download service"
+            summary: "Get Spatial Object"
+            description: "Retrieval of Spatial Objects based upon a query. (Annex IV, Part\
+              \ B, Section 7)"
+            operationId: "getSpatialObject"
+            produces:
+            - "application/json"
+            parameters:
+            - name: "dsid"
+              in: "path"
+              description: "ID of the dataset"
+              required: true
+              type: "string"
+            - name: "sot"
+              in: "path"
+              description: "list of names of the Spatial Object Types"
+              required: true
+              type: "array"
+              items:
+                type: "string"
+              collectionFormat: "csv"
+            responses:
+              200:
+                description: "a GeoJSON FeatureCollection with the selected features of\
+                  \ the spatial data set"
+                schema:
+                  $ref: "#/definitions/FeatureCollection"
+            
   sotDescription:
     type: object
+
   viewCapabilities:
     type: object
+
   FeatureCollection:
     type: object
     required:
@@ -342,6 +616,7 @@ definitions:
             geometry:
               type: object
               description: geometry of the feature
+
 externalDocs:
   description: Documentation of the API
   url: https://github.com/benoitdavidfr/geoapi-inspireoai
