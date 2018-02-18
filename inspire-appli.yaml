@@ -371,7 +371,6 @@ definitions:
           Operations Metadata (2.2.2.)
           Describes the operations of the View Service and shall contain as a minimum a description of the data
           exchanged and the network address of each operation.
-        $ref: '#/definitions/operations'
         $ref: 'https://raw.githubusercontent.com/benoitdavidfr/geoapi-inspireoai/master/operationcap.yaml#/definitions/operationCap'
       supportedLanguages:
         description: >-
