@@ -3,8 +3,6 @@ info:
   version: '0.1.0'
   title: 'Inspire download and view services'
   description: >-
-    WORK IN PROGRESS
-    
     Specification of download and view services defined by 
     [Inspire EU Regulation 976/2009](http://data.europa.eu/eli/reg/2009/976/2014-12-31)
     implementing the [Inspire EU directive](http://data.europa.eu/eli/dir/2007/2/oj).
@@ -18,6 +16,8 @@ info:
       * the requested natural language is defined by the Accept-Language HTTP request header,
       * the natural language used in the response is defined by the Content-Language HTTP response header.
 
+    **WORK IN PROGRESS**
+    
     To be done:
       * metadata elements
       * specification of queries

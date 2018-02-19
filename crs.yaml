@@ -1,0 +1,192 @@
+titre: exigences sur les CRS dans Inspire
+doc: |
+  Résumé:
+    Sauf exceptions, les SD doivent être exposées dans au moins un des CRS:
+      - (X,Y,Z) ETRS89
+      - (lat,long,hauteurElliposidale) ETRS89
+      - (lat,long) ETRS89
+      - ETRS89-LAEA
+      - ETRS89-LCC
+      - ETRS89-TMxxN
+      - un des 4 précédents combiné avec l'altitude sur terre, ou une hauteur en mer
+    Les 2 exceptions sont:
+      - qu'un autre CRS soit défini dans les annexes de la règlementation
+      - hors de l'Europe continentale où un CRS fondé sur ITRS doit être utilisé
+      
+refLeg:
+  uri: http://data.europa.eu/eli/reg/2010/1089/2014-12-31#/AnnexII/Section1
+  titleEn: |
+  titleFr: |
+exigencesRèglementaires:
+  section1.2:
+    titleFr: Datum pour les référentiels de coordonnées tridimensionnels et bidimensionnels
+    sourceFr: |
+      Pour les référentiels de coordonnées tridimensionnels et bidimensionnels et pour la composante horizontale des
+      référentiels de coordonnées combinés utilisés aux fins de la mise à disposition de séries de données géographiques,
+      le datum employé est celui du Système de référence terrestre européen 1989 (European Terrestrial Reference System -
+      ETRS89), dans les zones situées dans son champ d'application géographique, ou, dans les zones situées hors du champ
+      d'application géographique de l'ETRS89, le datum du Système de référence terrestre international (International
+      Terrestrial Reference System - ITRS) ou de tout autre référentiel de coordonnées géodésique conforme à l'ITRS.
+      Un système conforme à l'ITRS est un système dont la définition est basée sur celle de l'ITRS et dont la relation
+      avec ce dernier est bien documentée, conformément à EN ISO 19111.
+
+  section1.3:
+    titleFr: Référentiels de coordonnées
+    sourceFr: |
+      Les séries de données géographiques sont mises à disposition en utilisant au moins un des référentiels de
+      coordonnées spécifiés aux points 1.3.1, 1.3.2 et 1.3.3, à moins que l'une des conditions énoncées au point
+      1.3.4 ne soit remplie.
+
+  section1.3.1:
+    titleFr: Référentiels de coordonnées tridimensionnels
+    items:
+      - >-
+        Coordonnées cartésiennes tridimensionnelles basées sur un datum spécifié au point 1.2 et fondées sur les
+        paramètres de l'ellipsoïde du Système de référence géodésique 1980 (GRS80).
+      - >-
+        Coordonnées géodésiques tridimensionnelles (latitude, longitude et hauteur ellipsoïdale) basées sur un datum
+        spécifié au point 1.2 et fondées sur les paramètres de l'ellipsoïde GRS80.
+
+  section1.3.2:
+    titleFr: Référentiels de coordonnées bidimensionnels
+    items:
+      - >-
+        Coordonnées géodésiques bidimensionnelles (latitude et longitude) basées sur un datum spécifié au point 1.2
+        et fondées sur les paramètres de l'ellipsoïde GRS80.
+      - Coordonnées planes selon le référentiel de coordonnées Lambert azimutal équivalent ETRS89.
+      - Coordonnées planes selon le référentiel de coordonnées Lambert conique conforme ETRS89.
+      — Coordonnées planes selon le référentiel de coordonnées Mercator transverse ETRS89.
+
+  section1.3.3:
+    titleFr: Référentiels de coordonnées combinés
+    items:
+      - >-
+        Pour la composante horizontale du référentiel de coordonnées combiné, on utilisera l'un des référentiels de
+        coordonnées spécifiés au point 1.3.2.
+      - title: Pour la composante verticale, on utilisera l'un des référentiels de coordonnées suivants
+        sur terre: >-
+          le Système européen de référence verticale (European Vertical Reference Systeme – EVRS) pour exprimer les
+          altitudes liées à la gravité dans le champ d'application géographique de ce système. Dans les zones situées
+          hors du champ d'application géographique de l'EVRS, on utilisera d'autres systèmes de référence verticale
+          liés au champ gravimétrique de la Terre pour exprimer les altitudes liées à la gravité;
+        dans l'atmosphère libre: >-
+          la pression barométrique convertie en altitude conformément à la norme ISO 2533:1975 (Atmosphère type),
+          ou tout autre système de référence linéaire ou paramétré. En cas d’utilisation d’autres systèmes de référence
+          paramétriques, ces systèmes doivent être décris dans une référence accessible conformément à la norme
+          EN ISO 19111-2:2012;
+        dans les zones marines caractérisées par une amplitude de marées appréciable (eaux de marées): >-
+          la marée astronomique minimale (LAT) doit être utilisée comme surface de référence;
+        dans les zones marines qui ne sont pas caractérisées par une amplitude de marées appréciable et, en tout état de cause, dans les eaux dont la profondeur est supérieure à 200 mètres,: >-
+          le niveau moyen de la mer (MSL), ou un niveau de référence bien défini proche du MSL, doit être utilisé comme
+          surface de référence.
+
+  section1.3.4:
+    titleFr: Autres référentiels de coordonnées
+    header: >-
+      Dans certains cas exceptionnels, il est possible d'utiliser des référentiels de coordonnées autres que ceux
+      énumérés aux points 1.3.1, 1.3.2 ou 1.3.3. Ces cas sont les suivants:
+    items:
+      - >-
+        il se peut que d'autres référentiels de coordonnées soient spécifiés pour certains thèmes de données
+        géographiques visés à la présente annexe;
+      - >-
+        pour les régions situées hors de l'Europe continentale, les États membres peuvent définir des référentiels
+        de coordonnées appropriés.
+        Les codes et paramètres géodésiques nécessaires pour décrire ces référentiels de coordonnées et permettre
+        les opérations de conversion et de transformation doivent être dûment documentés et un identifiant doit être
+        créé conformément aux normes EN ISO 19111 et ISO 19127.
+
+  section1.4:
+    titleFr: Référentiels de coordonnées utilisés dans le service de consultation en réseau
+    sourceFr: |
+      Pour l'affichage de séries de données géographiques au moyen du service de consultation en réseau conformément
+      au règlement (CE) no 976/2009, les référentiels de coordonnées disponibles comprennent, au minimum, les
+      référentiels pour les coordonnées géodésiques bidimensionnelles (latitude, longitude).
+
+  section1.5:
+    titleFr: Identifiants des référentiels de coordonnées
+    items:
+      - >-
+        Les paramètres et les identifiants des référentiels de coordonnées sont gérés dans un ou plusieurs registres
+        communs de référentiels de coordonnées.
+      - >-
+        Seuls les identifiants figurant dans un registre commun doivent être utilisés pour faire référence aux
+        référentiels de coordonnées énumérés à la présente section.
+
+registreDesCRS:
+  source:
+    url: http://inspire.ec.europa.eu/file/1726/download?token=3OGur2Ln
+    title: INSPIRE Data Specification on Coordinate Reference Systems – Technical Guidelines
+    version: 3.2
+  crs:
+    ETRS89-XYZ:
+      title: 3D Cartesian in ETRS89 (X,Y,Z)
+      uri: http://www.opengis.net/def/crs/EPSG/0/4936
+    ETRS89-GRS80h:
+      title: 3D geodetic in ETRS89 on GRS80 (Latitude, Longitude, Ellipsoidal height)
+      uri: http://www.opengis.net/def/crs/EPSG/0/4937
+    ETRS89-GRS80:
+      title: 2D geodetic in ETRS89 on GRS80 (Latitude, Longitude)
+      uri: http://www.opengis.net/def/crs/EPSG/0/4258
+    ETRS89-LAEA:
+      title: 2D LAEA projection in ETRS89 on GRS80 (Y,X)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3035
+    ETRS89-LCC:
+      title: 2D LCC projection in ETRS89 on GRS80 (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3034
+    ETRS89-TM26N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 26N (30°W to 24°W) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3038
+    ETRS89-TM27N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 27N (24°W to 18°W) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3039
+    ETRS89-TM28N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 28N (18°W to 12°W) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3040
+    ETRS89-TM29N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 29N (12°W to 6°W) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3041
+    ETRS89-TM30N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 30N (6°W to 0°) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3042
+    ETRS89-TM31N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 31N (0° to 6°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3043
+    ETRS89-TM32N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 32N (6°E to 12°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3044
+    ETRS89-TM33N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 33N (12°E to 18°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3045
+    ETRS89-TM34N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 34N (18°E to 24°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3046
+    ETRS89-TM35N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 35N (24°E to 30°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3047
+    ETRS89-TM36N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 36N (30°E to 36°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3048
+    ETRS89-TM37N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 37N (36°E to 42°E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3049
+    ETRS89-TM38N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 38N (42°E to 48°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3050
+    ETRS89-TM39N:
+      title: 2D TM projection in ETRS89 on GRS80, zone 39N (48°E to 54°E) (N,E)
+      uri: http://www.opengis.net/def/crs/EPSG/0/3051
+    EVRS:
+      title: Height in EVRS (H)
+      uri: http://www.opengis.net/def/crs/EPSG/0/5730
+    LAT:
+      title: Depth referred to LAT (D)
+      uri: http://www.opengis.net/def/crs/EPSG/0/5861
+    MSL:
+      title: Depth referred to MSL (D)
+      uri: http://www.opengis.net/def/crs/EPSG/0/5715
+    ISA:
+      title: Pressure coordinate in the free atmosphere (P)
+    ETRS89-GRS80-EVRS:
+      title: "3D compound: 2D geodetic in ETRS89 on GRS80, and EVRS height (Latitude, Longitude, H)"
+      uri: http://www.opengis.net/def/crs/EPSG/0/7409

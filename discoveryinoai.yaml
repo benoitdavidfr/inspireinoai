@@ -1,0 +1,202 @@
+swagger: '2.0'
+info:
+  version: '0.1.0'
+  title: 'Inspire discovery service'
+  description: >-
+    Specification of an Inspire discovery service defined by 
+    [Inspire EU Regulation 976/2009](http://data.europa.eu/eli/reg/2009/976/2014-12-31)
+    implementing the [Inspire EU directive](http://data.europa.eu/eli/dir/2007/2/oj).
+    
+    With the exception of the API documentation and of the dataset URI, each path corresponds to an operation defined
+    by the regulation, its summary contains the title of the operation used in the regulation and its description
+    countains the role of the operation defined by the regulation followed between parentheses by the reference of
+    the operation in the regulation.
+    
+    For each operation:
+      * the requested natural language is defined by the Accept-Language HTTP request header,
+      * the natural language used in the response is defined by the Content-Language HTTP response header.
+
+    **WORK IN PROGRESS**
+    
+    To be done:
+      * metadata elements
+      * specification of the query
+# Added by API Auto Mocking Plugin
+# host: inspireappli.geoapi.fr
+# basePath: /
+# schemes:
+#  - http
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /benoitdavidfr/discoveryinoai/0.1.0
+schemes:
+ - https
+ - http
+paths:
+  /:
+    get:
+      tags:
+        - API documentation
+      summary: Returns a short description of the API
+      operationId: desc
+      produces:
+        - text/html
+        - application/json
+      responses:
+        '200':
+          description: opération réussie
+  /doc:
+    get:
+      tags:
+        - API documentation
+      summary: Forward to complete documentation site
+      operationId: doc
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: opération réussie
+  /spec:
+    get:
+      tags:
+        - API documentation
+      summary: Forward to API specification in Swagger
+      operationId: spec
+      produces:
+        - text/html
+        - application/json
+      responses:
+        '200':
+          description: opération réussie
+  /terms:
+    get:
+      tags:
+        - API documentation
+      summary: Returns the terms of use
+      operationId: terms
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: opération réussie
+  '/discovery':
+    get:
+      tags:
+        - discovery service
+      summary: Get Discovery Service Metadata
+      description: >-
+        Provides all necessary information about the service and describes service capabilities
+        (Annex II, Part B, Section 2)
+      operationId: getDiscoveryServiceMetadata
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: the service metadata
+          schema:
+            $ref: '#/definitions/discoveryCapabilities'
+  '/discovery/discover':
+    get:
+      tags:
+        - discovery service
+      summary: Discover Metadata
+      description: >-
+        Allows requesting INSPIRE metadata elements of resources based on a query statement to be retrieved from
+        the target Discovery Service.
+        (Annex II, Part B, Section 3)
+      operationId: discoverMetadata
+      produces:
+        - application/json
+      parameters:
+        - name: query
+          in: path
+          description: query on metadata elements
+          required: true
+          type: string
+      responses:
+        '200':
+          description: set of selected metadata files
+          schema:
+            type: array
+            items:
+              $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml#/definitions/metadata'
+  '/discovery/publishMetadataByPushing':
+    post:
+      tags:
+        - discovery service
+      summary: Publish Metadata - push mechanism
+      description: >-
+        The Publish Metadata operation allows editing INSPIRE metadata elements of resources in the Discovery Service
+        (push metadata mechanisms). Editing meaning insert, update and delete
+        (Annex II, Part B, Section 4.1)
+      operationId: publishMetadataByPushing
+      parameters:
+        - name: action
+          in: path
+          description: "the action to be executed with the metadata file: ['insert','update','delete']"
+          required: true
+          type: string
+        - name: datasetOrServiceUri
+          in: path
+          description: URI of the dataset/service for which the metadata is inserted/updated/deleted
+          required: true
+          type: string
+      responses:
+        '200':
+          description: operation correctly completed
+        '400':
+          description: the uri parameter doesn't reference a dataset or a service, or the action is unknown
+        '404':
+          description: an error occured, the operation was not completed
+  '/discovery/publishMetadataByPulling':
+    post:
+      tags:
+        - discovery service
+      summary: Publish Metadata - pull mechanism
+      description: >-
+        The Publish Metadata operation allows editing INSPIRE metadata elements of resources in the Discovery Service
+        (pull metadata mechanisms). Editing meaning insert, update and delete
+        (Annex II, Part B, Section 4.2)
+          The metadata files selected in the target discovery service are harvested in the current discovery service
+      operationId: publishMetadataByPulling
+      parameters:
+        - name: toHarvestUri
+          in: path
+          description: URI of the discover metadata operation of the discovery service to harvest to the current service
+          required: true
+          type: string
+      responses:
+        '200':
+          description: operation correctly completed, metadata have been harvested
+        '400':
+          description: the uri parameter doesn't respond with a set of metadata
+        '404':
+          description: an error occured, the operation was not completed
+definitions:
+  discoveryCapabilities:
+    type: object
+    description: >-
+      Response of the Get Discovery Service Metadata request (Annex II Part B Section 2.2)
+    properties:
+      serviceMetadata:
+        description: >-
+          Download Service Metadata (2.2.1.)
+          At least contain the INSPIRE metadata elements of the Search Service.
+        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml#/definitions/metadata'
+      operationsMetadata:
+        description: >-
+          Operations Metadata (2.2.2.)
+          Metadata about the operations implemented by the Discovery Service. These metadata parameters describe each
+          operation. It shall at least provide the following:
+            1. indicate for the Publish Metadata if the Pull Mechanism, the Push Mechanism or both are available;
+            2. describe each operation, including as a minimum a description of the data exchanged and the network
+            address.
+        $ref: 'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/servicecap.yaml#/definitions/operationCap'
+      supportedLanguages:
+        description: >-
+          Supported languages (2.2.3.b)
+          The list of the natural languages supported by the Service coded using ISO 639-2 alpha-3.
+            The response language (2.2.3.a) is given by the Content-Language HTTP response header
+        type: array
+        items: {type: string}
+        example: ['fre','eng']

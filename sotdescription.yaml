@@ -1,7 +1,7 @@
 title: Swagger definition for the description of Spatial Objects types
 doc: |
   The description of the spatial object types, in conformity with Regulation (EU) No 1089/2010.
-  The objective is to use [JSON Schema](http://json-schema.org/) to define spatial object types
+  The objective is to use a simplified version [JSON Schema](http://json-schema.org/) to define spatial object types
 journal: |
   18/2/2018:
     first minimal version
