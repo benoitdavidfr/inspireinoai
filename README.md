@@ -1,4 +1,4 @@
-# Specification of Inspire network services using Open API initiative mechanism
+# Specification of Inspire network services using the Open API initiative mechanism
 
 A [preliminary version of Swagger definition for download and view services is available here](https://app.swaggerhub.com/apis/benoitdavidfr/inspireinoai).
 
