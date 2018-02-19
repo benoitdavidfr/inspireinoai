@@ -35,7 +35,9 @@ and eventuelly a view service.
 If the thematic application doesn't implement a view service, a mapping application will be used to make a view service
 by using the data from the download service.
 The catalogue can be generally a specific application distinct from thematic applications.
-The different API specification can be defined using OAI mechanism.
+
+Defining the API specifications using the OAI mechanism contribute to standardize the API
+and simplifies the implementation for thematic applications.
 
 A [preliminary version of OAI/Swagger definition for download and view services is available here](https://app.swaggerhub.com/apis/benoitdavidfr/inspireinoai).
 The source file corresponds to
@@ -45,4 +47,10 @@ A [preliminary version of OAI/Swagger definition for a discovery service is avai
 The source file corresponds to
 [discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/discoveryinoai.yaml).
 
-These definitions are designed to be conformant to the Inspire regulations.
+These specifications are designed so that the thematic application implmenting them will be conformant
+to the Inspire regulations.
+
+These specifications can be used in several ways:
+  * natively implement API to make a thematic application compliant to Inspire,
+  * build a bridge between the OAI world and the OG/ISO191xx world, in one way or the other.
+  
