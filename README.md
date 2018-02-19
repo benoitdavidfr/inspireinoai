@@ -38,7 +38,11 @@ The catalogue can be generally a specific application distinct from thematic app
 The different API specification can be defined using OAI mechanism.
 
 A [preliminary version of OAI/Swagger definition for download and view services is available here](https://app.swaggerhub.com/apis/benoitdavidfr/inspireinoai).
+The source file corresponds to
+[inspireinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/inspireinoai.yaml).
 
 A [preliminary version of OAI/Swagger definition for a discovery service is available here](https://app.swaggerhub.com/apis/benoitdavidfr/discoveryinoai).
+The source file corresponds to
+[discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/discoveryinoai.yaml).
 
 These definitions are designed to be conformant to the Inspire regulations.
