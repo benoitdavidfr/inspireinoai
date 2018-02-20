@@ -63,5 +63,5 @@ These specifications can be used in several ways:
 * [Commission Regulation (EC) No 1205/2008 of 3 December 2008 implementing Directive 2007/2/EC of the European
   Parliament and of the Council as regards metadata](http://data.europa.eu/eli/reg/2008/1205/oj)
 * [The GeoJSON Format, RFC 7946, August 2016](https://tools.ietf.org/html/rfc7946)
-* (OpenAPI Initiative (OAI))[https://www.openapis.org/]
+* [OpenAPI Initiative (OAI)](https://www.openapis.org/)
   
