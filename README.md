@@ -53,4 +53,13 @@ to the Inspire regulations.
 These specifications can be used in several ways:
   * natively implement API to make a thematic application compliant to Inspire,
   * build a bridge between the OAI world and the OG/ISO191xx world, in one way or the other.
+
+## References
+
+* [Directive 2007/2/EC of the European Parliament and of the Council of 14 March 2007 establishing an Infrastructure
+  for Spatial Information in the European Community (INSPIRE)](http://data.europa.eu/eli/dir/2007/2/oj)
+* [Commission Regulation (EC) No 976/2009 of 19 October 2009 implementing Directive 2007/2/EC of the European
+  Parliament and of the Council as regards the Network Services ](http://data.europa.eu/eli/reg/2009/976/2014-12-31)
+* [Commission Regulation (EC) No 1205/2008 of 3 December 2008 implementing Directive 2007/2/EC of the European
+  Parliament and of the Council as regards metadata](http://data.europa.eu/eli/reg/2008/1205/oj)
   
