@@ -71,14 +71,14 @@ definitions:
         type: array
         items:
           type: string
-      resourceLanguage:
+      topicCategory:
         description: >-
           Topic category (2.1)
           The topic category is a high-level classification scheme to assist in the grouping and topic-based search of
           available spatial data resources.
             The value domain of this metadata element is defined in Part D.2.
         type: string
-        enums:
+        enum:
           - farming
           - biota
           - boundaries
@@ -129,7 +129,7 @@ definitions:
               description: the URI of the keyword if it exists
             cvocUri:
               type: string
-              description: > -
+              description: >-
                 the URI of the controlled vocabulary if it exists and if the URI of the keyword doesn't exist
             cvocTitle:
               type: string
@@ -174,7 +174,7 @@ definitions:
             type:
               type: string
               description: the kind of date or interval of dates
-              enums: [ temporalExtent, publicationDate, lastRevisionDate, creationDate]
+              enum: [ temporalExtent, publicationDate, lastRevisionDate, creationDate]
             date:
               type: string
               format: date
@@ -237,7 +237,7 @@ definitions:
                   This is the degree of conformity of the resource to the implementing rules adopted under Article 7(1)
                 of Directive 2007/2/EC or other specification.
               type: string
-              enums: [conformant, notConformant, notEvaluated]
+              enum: [conformant, notConformant, notEvaluated]
       useLimitation:
         description: >-
           Conditions applying to access and use (8.1)
@@ -260,7 +260,7 @@ definitions:
             The value domain of this metadata element is free text.
             One of the URI from http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess has to be used.
         type: string
-        enums:
+        enum:
           - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations
           - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1a
           - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1b
@@ -304,7 +304,7 @@ definitions:
                   - publisher: Party who published the resource.
                   - author: Party who authored the resource.
               type: string
-              enums:
+              enum:
                 - resourceProvider
                 - custodian
                 - owner
