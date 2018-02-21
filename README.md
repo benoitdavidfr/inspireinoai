@@ -70,8 +70,8 @@ A [preliminary version of OAI/Swagger definition for metadata is available here]
 The source file corresponds to
 [metadata.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml).
 
-These specifications are designed so that the thematic application implmenting them will be conformant
-to the Inspire regulations.
+These specifications are designed so that the thematic application implementing them will conform
+the Inspire regulations.
 
 These specifications can be used in several ways:
   * natively implement API to make a thematic application conformant to Inspire,
