@@ -33,7 +33,7 @@ Therefore, in practice, Inspire competes with the Open Data as the objectives of
 Use of Coordinate Reference Systems (CRS) is complex for non-GIS experts.
 The goal here is to simplify this subject with 2 main ideas:
 
-* for dowloading in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
+* for **dowloading** in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
   (or an ITS CRS over-seas)
   with eventually a third coordinate which can be in application of Inspire regulation:
     * ellipsoidal height above the GRS80 ellipsoid,
@@ -44,7 +44,7 @@ The goal here is to simplify this subject with 2 main ideas:
       Tide (LAT),
     * in other marine areas, a height above the Mean Sea Level (MSL) or a well-defined reference level close to the MSL.
   The choice for the eventual third coordinates will be documented thow a CRS URI.
-* for viewing, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
+* for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
   Default and recommanded CRS is the 'Spherical Mercator' using well-known EPSG:3857 code.
 
 ## The technical solution
