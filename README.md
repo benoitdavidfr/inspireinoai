@@ -28,6 +28,25 @@ Therefore, in practice, Inspire competes with the Open Data as the objectives of
   Because the thematic applications already know the metadata, adding a new dataset or service to a catalogue shoud be
   simple, the only thing to do is to push them from the application to the catalogue.
 
+## The CRS question
+
+Use of Coordinate Reference Systems (CRS) is complex for non-GIS experts.
+The goal here is to simplify this subject with 2 main ideas:
+
+* for dowloading in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
+  (or an ITS CRS over-seas)
+  with eventually a third coordinate which can be in application of Inspire regulation:
+    * ellipsoidal height above the GRS80 ellipsoid,
+    * on land, a height expressed in the European Vertical Reference System (EVRS),
+    * in the free atmosphere, a height converted from barometric pressure using ISO 2533:1975 International Standard
+      Atmosphere,
+    * in marine areas where there is an appreciable tidal range (tidal waters), a height above the Lowest Astronomical
+      Tide (LAT),
+    * in other marine areas, a height above the Mean Sea Level (MSL) or a well-defined reference level close to the MSL.
+  The choice for the eventual third coordinates will be documented thow a CRS URI.
+* for viewing, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
+  Default and recommanded CRS is the 'Spherical Mercator' using well-known EPSG:3857 code.
+
 ## The technical solution
 
 Technically, the solution is to add to a web application an API interface that implements at least a download service

@@ -121,3 +121,8 @@ La spécification OAI d'une IDG peut être utilisée de 3 manières différentes
   - un proxy peut être mis en place pour exposer une IDG implémentée avec une techno différente,
     ex: http://urba.geoapi.fr
   - à l'inverse, on peut aussi créer une API conforme aux guides d'implémentation pour exposer une IDG spécifiée en OAI.
+
+===
+Spécification des schema de données Inspire en OAI
+---
+  
