@@ -47,11 +47,15 @@ A [preliminary version of OAI/Swagger definition for a discovery service is avai
 The source file corresponds to
 [discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/discoveryinoai.yaml).
 
+A [preliminary version of OAI/Swagger definition for metadata is available here](https://app.swaggerhub.com/apis/benoitdavidfr/metadatainoai).
+The source file corresponds to
+[discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml).
+
 These specifications are designed so that the thematic application implmenting them will be conformant
 to the Inspire regulations.
 
 These specifications can be used in several ways:
-  * natively implement API to make a thematic application compliant to Inspire,
+  * natively implement API to make a thematic application conformant to Inspire,
   * build a bridge between the OAI world and the OG/ISO191xx world, in one way or the other.
 
 ## References

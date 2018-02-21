@@ -3,13 +3,14 @@ info:
   version: '0.5.0'
   title: 'Inspire metadata'
   description: >-
-    This document specifies INSPIRE metadata elements as defined in
-    [Inspire Regulation 1205/2008](http://data.europa.eu/eli/reg/2008/1205/oj) in the metadata definition.
+    This document specifies in the metadata definition INSPIRE metadata elements as defined in
+    [Inspire Regulation 1205/2008](http://data.europa.eu/eli/reg/2008/1205/oj).
     This definition is used in other specifications.
       It's URL is
     'https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml#/definitions/metadata'.
       Each property of the metadata object contains in its description parameter the name of the element as given
     in the regulation, its number, and the definition given in the regulation.
+      Version 0.5.0 is the first version that is rather complete, it has been published on 2018-02-21.
 
 # Added by API Auto Mocking Plugin
 # host: inspireappli.geoapi.fr
