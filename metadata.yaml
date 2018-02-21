@@ -52,8 +52,297 @@ definitions:
         type: array
         items:
           type: string
-      toBeCompleted:
+      operatesOn:
+        description: >-
+          Coupled resource (1.6)
+          If the resource is a spatial data service, this metadata element identifies, where relevant, the target
+          spatial data set(s) of the service through their unique resource identifiers (URI).
+            The value domain of this metadata element is a mandatory character string code, generally assigned by
+          the data owner, and a character string namespace uniquely identifying the context of the identifier code
+          (for example, the data owner).
+        type: array
+        items:
+          type: string
+      resourceLanguage:
+        description: >-
+          Resource language (1.7)
+          The language(s) used within the resource.
+            The value domain of this metadata element is limited to the languages defined in ISO 639-2.
+        type: array
+        items:
+          type: string
+      resourceLanguage:
+        description: >-
+          Topic category (2.1)
+          The topic category is a high-level classification scheme to assist in the grouping and topic-based search of
+          available spatial data resources.
+            The value domain of this metadata element is defined in Part D.2.
         type: string
+        enums:
+          - farming
+          - biota
+          - boundaries
+          - climatologyMeteorologyAtmosphere
+          - economy
+          - elevation
+          - environment
+          - geoscientificInformation
+          - health
+          - imageryBaseMapsEarthCover
+          - intelligenceMilitary
+          - inlandWaters
+          - location
+          - oceans
+          - planningCadastre
+          - society
+          - structure
+          - transportation
+          - utilitiesCommunication
+      serviceType:
+        description: >-
+          Spatial data service type (2.2)  
+            This is a classification to assist in the search of available spatial data services. A specific service
+          shall be categorised in only one category.
+            The value domain of this metadata element is defined in Part D.3. 
+        type: string
+        enum: [discovery, view, download, transformation, invoke, other]
+      keywords:
+        description: >-
+          3.   KEYWORD
+            If the resource is a spatial data service, at least one keyword from Part D.4 shall be provided.
+            If a resource is a spatial data set or spatial data set series, at least one keyword shall be provided
+          from the general environmental multilingual thesaurus (GEMET) describing the relevant spatial data theme 
+          as defined in Annex I, II or III to Directive 2007/2/EC.
+            If the keyword doesn't originate from a controlled vocabulary then only the value property is given,
+            else if an URI is defined for the keyword then this URI is given in the uri property
+            else if an URI is defined for the controlled vocabulary then  this URI is given in the cvocUri property
+            else
+        type: array
+        items:
+          type: object
+          properties:
+            value: 
+              type: string
+              description: the value or label of the keyword
+            uri:
+              type: string
+              description: the URI of the keyword if it exists
+            cvocUri:
+              type: string
+              description: > -
+                the URI of the controlled vocabulary if it exists and if the URI of the keyword doesn't exist
+            cvocTitle:
+              type: string
+              description: if none of the URI exist, the title of the controlled vocabulary
+            cvocReferenceDate:
+              type: string
+              description: >-
+                if none of the URI exist, the reference date (date of publication, date of last revision or of
+                creation) of the controlled vocabulary
+      bbox:
+        description: >-
+          Geographic bounding box (4.1)
+            This is the extent of the resource in the geographic space, given as a bounding box.
+            The bounding box shall be expressed with westbound and eastbound longitudes, and southbound and northbound
+          latitudes in decimal degrees, with a precision of at least two decimals.
+            It can be usefull to use a set of bounding boxes instead of one; the extent is the union of the boxes.
+          Therefore it is the choice here.
+        type: array
+        items:
+          type: object
+          description: each bounding box
+          properties:
+            westBoundLongitude: {type: number}
+            southBoundLatitude: {type: number}
+            eastBoundLongitude: {type: number}
+            northBoundLatitude: {type: number}
+      temporalExtent:
+        description: >-
+          TEMPORAL REFERENCE (5.)
+            This metadata element addresses the requirement to have information on the temporal dimension of the data
+          as referred to in Article 8(2)(d) of Directive 2007/2/EC. At least one of the metadata elements referred
+          to in points 5.1 to 5.4 shall be provided.
+            The value domain of the metadata elements referred to in points 5.1 to 5.4 is a set of dates. Each date
+          shall refer to a temporal reference system and shall be expressed in a form compatible with that system.
+          The default reference system shall be the Gregorian calendar, with dates expressed in accordance with
+          ISO 8601.
+        type: array
+        items:
+          type: object
+          description: each date or interval, either 
+          properties:
+            type:
+              type: string
+              description: the kind of date or interval of dates
+              enums: [ temporalExtent, publicationDate, lastRevisionDate, creationDate]
+            date:
+              type: string
+              format: date
+            startingDate:
+              type: string
+              format: date
+            endDate:
+              type: string
+              format: date
+      lineage:
+        description: >-
+          6.1.   Lineage
+            This is a statement on process history and/or overall quality of the spatial data set. Where appropriate
+          it may include a statement whether the data set has been validated or quality assured, whether it is the
+          official version (if multiple versions exist), and whether it has legal validity.
+            The value domain of this metadata element is free text.
+        type: string
+      spatialResolutionScaleDenominator:
+        description: >-
+          Spatial resolution (6.2)
+            Spatial resolution refers to the level of detail of the data set. It shall be expressed as a set of zero
+          to many resolution distances (typically for gridded data and imagery-derived products) or equivalent
+          scales (typically for maps or map-derived products).
+            An equivalent scale is generally expressed as an integer value expressing the scale denominator.
+        type: array
+        items: { type: number }
+      spatialResolutionDistance:
+        description: >-
+          Spatial resolution (6.2)
+            Spatial resolution refers to the level of detail of the data set. It shall be expressed as a set of zero
+          to many resolution distances (typically for gridded data and imagery-derived products) or equivalent
+          scales (typically for maps or map-derived products).
+            An equivalent scale is generally expressed as an integer value expressing the scale denominator.
+        type: array
+        items:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              description: the unit of length
+              type: string
+              enum: [ meter, kilometer, millimeter]
+      conformity:
+        description: >-
+          CONFORMITY (7.)
+        type: array
+        items:
+          description: >-
+            If the specification can be expressed throw an URI, then its is given in the specificationUri property
+              else the specification is experessed throw its title and reference date
+          type: object
+          properties:
+            specificationUri: {type: string}
+            specificationTitle: {type: string}
+            specificationDate: {type: string, format: date}
+            degreeOfConformity:
+              description: >-
+                Degree (7.2)
+                  This is the degree of conformity of the resource to the implementing rules adopted under Article 7(1)
+                of Directive 2007/2/EC or other specification.
+              type: string
+              enums: [conformant, notConformant, notEvaluated]
+      useLimitation:
+        description: >-
+          Conditions applying to access and use (8.1)
+            This metadata element defines the conditions for access and use of spatial data sets and services,
+          and where applicable, corresponding fees as required by Article 5(2)(b) and Article 11(2)(f) of Directive
+          2007/2/EC.
+            The value domain of this metadata element is free text.
+            The element must have values. If no conditions apply to the access and use of the resource,
+          ‘no conditions apply’ shall be used. If conditions are unknown, ‘conditions unknown’ shall be used.
+            This element shall also provide information on any fees necessary to access and use the resource,
+          if applicable, or refer to a uniform resource locator (URL) where information on fees is available.
+        type: string
+      accessConstraints:
+        description: >-
+          Limitations on public access (8.2)
+            When Member States limit public access to spatial data sets and spatial data services under Article 13
+          of Directive 2007/2/EC, this metadata element shall provide information on the limitations and the reasons
+          for them.
+            If there are no limitations on public access, this metadata element shall indicate that fact.
+            The value domain of this metadata element is free text.
+            One of the URI from http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess has to be used.
+        type: string
+        enums:
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1a
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1b
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1c
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1e
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1f
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1g
+          - http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1h
+      responsibleParty:
+        description: >-
+          Responsible party (9.1)
+            This is the description of the organisation responsible for the establishment, management, maintenance and
+          distribution of the resource.
+        type: array
+        items:
+          type: object
+          properties:
+            organisationName:
+              description: the name of the organisation as free text
+              type: string 
+            email:
+              description: a contact e-mail address as a character string
+              type: string 
+            role:
+              description: >-
+                Responsible party role (9.2)
+                  This is the role of the responsible organisation.
+                  The value domain of this metadata element is defined bellow:
+                  - resourceProvider: Party that supplies the resource
+                  - custodian: Party that accepts accountability and responsibility for the data and ensures appropriate
+                    care and maintenance of the resource
+                  - owner: Party that owns the resource
+                  - user: Party who uses the resource
+                  - distributor: Party who distributes the resource
+                  - originator: Party who created the resource
+                  - pointOfContact: Party who can be contacted for acquiring knowledge about or acquisition of the
+                    resource.
+                  - principalInvestigator: Key party responsible for gathering information and conducting research.
+                  - processor: Party who has processed the data in a manner such that the resource has been modified.
+                  - publisher: Party who published the resource.
+                  - author: Party who authored the resource.
+              type: string
+              enums:
+                - resourceProvider
+                - custodian
+                - owner
+                - user
+                - distributor
+                - originator
+                - pointOfContact
+                - principalInvestigator
+                - processor
+                - publisher
+                - author
+      mdContact:
+        description: >-
+          Metadata point of contact (10.1)
+            This is the description of the organisation responsible for the creation and maintenance of the metadata.
+            This description shall include:
+              — 
+              — a contact e-mail address as a character string.
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              description: the name of the organisation as free text,
+              type: string
+      mdDate:
+        description: >-
+          Metadata date (10.2)
+            The date which specifies when the metadata record was created or updated.
+            This date shall be expressed in conformity with ISO 8601.
+          type: string
+          format: date
+      language:
+        description: >-
+         Metadata language (10.3)
+           This is the language in which the metadata elements are expressed.
+           The value domain of this metadata element is limited to the official languages of the Community expressed
+           in conformity with ISO 639-2.
     example:
       title: the resource title
       abstract: an abstract of the resource
