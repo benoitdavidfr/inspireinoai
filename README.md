@@ -68,7 +68,7 @@ The source file corresponds to
 
 A [preliminary version of OAI/Swagger definition for metadata is available here](https://app.swaggerhub.com/apis/benoitdavidfr/metadatainoai).
 The source file corresponds to
-[discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml).
+[metadata.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml).
 
 These specifications are designed so that the thematic application implmenting them will be conformant
 to the Inspire regulations.
