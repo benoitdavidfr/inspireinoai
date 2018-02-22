@@ -36,17 +36,18 @@ Understanding Coordinate Reference Systems (CRS) is a nightmare for non-GIS expe
 Therefore the goal here is to simplify this subject with 2 main ideas:
   * for **dowloading** in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
     (or an ITS CRS over-seas)
-    with eventually a third coordinate which can be in application of Inspire regulation:
-      * ellipsoidal height above the GRS80 ellipsoid,
-      * on land, a height expressed in the European Vertical Reference System (EVRS),
+    with potentially a third coordinate that can be, in application of Inspire regulation, one of the following:
+      * ellipsoidal height above the GRS80 ellipsoid (http://www.opengis.net/def/crs/EPSG/0/4937),
+      * on land, a height expressed in the European Vertical Reference System (EVRS)
+       (http://www.opengis.net/def/crs/EPSG/0/7409),
       * in the free atmosphere, a height converted from barometric pressure using ISO 2533:1975 International Standard
-        Atmosphere,
+        Atmosphere (http://inspire.ec.europa.eu/crs/ETRS89-GRS80-ISA),
       * in marine areas where there is an appreciable tidal range (tidal waters), a height above the Lowest Astronomical
-        Tide (LAT),
+        Tide (LAT) (http://inspire.ec.europa.eu/crs/ETRS89-GRS80-LAT),
       * in other marine areas, a height above the Mean Sea Level (MSL) or a well-defined reference level close to the
-        MSL.
+        MSL (http://inspire.ec.europa.eu/crs/ETRS89-GRS80-MSL).
         
-      The choice for the eventual third coordinates will be documented thow a CRS URI.
+      The choice for the potential third coordinates will be documented thow a CRS URI.
   * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
