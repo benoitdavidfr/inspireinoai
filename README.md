@@ -32,8 +32,8 @@ This reflexion is based on the following ideas:
 
 ## The CRS question
 
-Use of Coordinate Reference Systems (CRS) is complex for non-GIS experts.
-The goal here is to simplify this subject with 2 main ideas:
+Understanding Coordinate Reference Systems (CRS) is a nightmare for non-GIS experts.
+Therefore the goal here is to simplify this subject with 2 main ideas:
   * for **dowloading** in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
     (or an ITS CRS over-seas)
     with eventually a third coordinate which can be in application of Inspire regulation:
