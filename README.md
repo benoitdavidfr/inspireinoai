@@ -48,20 +48,20 @@ Therefore the goal here is to simplify this subject with 2 main ideas:
         MSL (http://inspire.ec.europa.eu/crs/ETRS89-GRS80-MSL).
         
       The choice for the potential third coordinates will be documented by a CRS URI.
-        If only 2 coordinates are given, the CRS URI will be http://www.opengis.net/def/crs/EPSG/0/4258
+      If only 2 coordinates are given, the CRS URI will be http://www.opengis.net/def/crs/EPSG/0/4258
       
   * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
-## The technical solution
+## The proposed solution
 
 Technically, the solution is to add to a web application an API interface that implements at least a download service
-and eventually a view service.
+and potentially a view service.
 If the thematic application doesn't implement a view service, a mapping application will be used to make a view service
 by using the data from the download service.
 The catalogue can be generally a specific application distinct from thematic applications.
 
-Defining the API specifications using the OAI mechanism contribute to standardize the API
+Defining the API specifications using the OAI formalism contributes to standardize the API
 and simplifies the implementation for thematic applications.
 
 A [preliminary version of OAI/Swagger definition for download and view services is available here](https://app.swaggerhub.com/apis/benoitdavidfr/inspireinoai).
