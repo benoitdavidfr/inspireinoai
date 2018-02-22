@@ -45,7 +45,8 @@ Therefore the goal here is to simplify this subject with 2 main ideas:
         Tide (LAT),
       * in other marine areas, a height above the Mean Sea Level (MSL) or a well-defined reference level close to the
         MSL.
-          The choice for the eventual third coordinates will be documented thow a CRS URI.
+        
+      The choice for the eventual third coordinates will be documented thow a CRS URI.
   * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
