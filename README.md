@@ -23,7 +23,7 @@ This reflexion is based on the following ideas:
     Therefore the web application should be an Inspire download service
     and, because it knows the datasets, should also be able to expose the metadata of the datasets.
   * Some applications are able to draw maps and therefore can also easily be a view service.
-    Others are not. If somebody defines how to style the information, it seems possible to develop a generic mapping
+    Others are not. If the way to style the information is defined, it seems possible to develop a generic mapping
     application that draws maps using this styling information to draw data downloaded from a thematic application.
   * A catalogue (also known as discovery service) is usefull to find information from the different thematic
     applications.
