@@ -1,6 +1,6 @@
 # OAI Specifications for Inspire network services
 
-Specification of Inspire network services using the [Open API initiative](https://www.openapis.org/) formalism.
+Specification of Inspire network services using the [Open API initiative (OAI)](https://www.openapis.org/) formalism.
 
 ## Why ?
 
@@ -16,7 +16,7 @@ Therefore, in practice, Inspire competes with the Open Data as the objectives of
 ## The basic ideas
 
 This reflexion is based on the following ideas:
-  * Data are managed in web applications and one shouldn't ask the user to write metadata, to publish them in a catalog
+  * Data are managed in web applications and we shouldn't ask the user to write metadata, to publish them in a catalog
     and organize the links with discovery/view/download services.
     The web application (that I will call **thematic application**) that manages the data should also manage all the
     needed information and expose it on the web.
