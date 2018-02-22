@@ -1,11 +1,11 @@
-# Specification in OAI of Inspire network services
+# OAI Specifications for Inspire network services
 
-Specification of Inspire network services using the [Open API initiative](https://www.openapis.org/) mechanism.
+Specification of Inspire network services using the [Open API initiative](https://www.openapis.org/) formalism.
 
 ## Why ?
 
 More and more public geographic datasets are published using open data platforms when they should use an Inspire platform.
-This can be explained by a lack of knowledge of Inspire obligations by some public authorities, but also by the complexity of the current technical framework.
+This can be explained by a lack of knowledge of Inspire obligations by some public authorities, but also by the complexity of the current Inspire technical framework.
 In France, beyond traditional applications such as spatial data portals, the Inspire data catalogs are not sufficiently used by professional or consumer applications.
 Thus, when an authority makes the effort to publish its data in this infrastructure, they are insufficiently valued. Again, the complexity of the technical framework, especially for Web developers that are not GIS-experts, slow down the development of applications using the infrastructure.
 Therefore, in practice, Inspire competes with the Open Data as the objectives of both actions are close and should be more complementary than competitive.
@@ -15,42 +15,44 @@ Therefore, in practice, Inspire competes with the Open Data as the objectives of
 
 ## The basic ideas
 
-* Data are managed in web applications and one shouldn't ask the user to write metadata, to publish them in a catalog
-  and organize the links with discovery/view/download services.
-  The web application (that I will call **thematic application**) that manages the data should also manage all the needed
-  information and expose it on the web.
-  Therefore the web application should be an Inspire download service
-  and, because it knows the datasets, should also be able to expose the metadata of the datasets.
-* Some applications are able to draw maps and therefore can also easily be a view service.
-  Others are not. If somebody defines how to style the information, it seems possible to develop a generic mapping
-  application that draws maps using this styling information to draw data downloaded from a thematic application.
-* A catalogue (also known as discovery service) is usefull to find information from the different thematic applications.
-  Because the thematic applications already know the metadata, adding a new dataset or service to a catalogue shoud be
-  simple, the only thing to do is to push them from the application to the catalogue.
+This reflexion is based on the following ideas:
+  * Data are managed in web applications and one shouldn't ask the user to write metadata, to publish them in a catalog
+    and organize the links with discovery/view/download services.
+    The web application (that I will call **thematic application**) that manages the data should also manage all the
+    needed information and expose it on the web.
+    Therefore the web application should be an Inspire download service
+    and, because it knows the datasets, should also be able to expose the metadata of the datasets.
+  * Some applications are able to draw maps and therefore can also easily be a view service.
+    Others are not. If somebody defines how to style the information, it seems possible to develop a generic mapping
+    application that draws maps using this styling information to draw data downloaded from a thematic application.
+  * A catalogue (also known as discovery service) is usefull to find information from the different thematic
+    applications.
+    Because the thematic applications already know the metadata, adding a new dataset or service to a catalogue shoud be
+    simple, the only thing to do is to push them from the application to the catalogue.
 
 ## The CRS question
 
 Use of Coordinate Reference Systems (CRS) is complex for non-GIS experts.
 The goal here is to simplify this subject with 2 main ideas:
-
-* for **dowloading** in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
-  (or an ITS CRS over-seas)
-  with eventually a third coordinate which can be in application of Inspire regulation:
-    * ellipsoidal height above the GRS80 ellipsoid,
-    * on land, a height expressed in the European Vertical Reference System (EVRS),
-    * in the free atmosphere, a height converted from barometric pressure using ISO 2533:1975 International Standard
-      Atmosphere,
-    * in marine areas where there is an appreciable tidal range (tidal waters), a height above the Lowest Astronomical
-      Tide (LAT),
-    * in other marine areas, a height above the Mean Sea Level (MSL) or a well-defined reference level close to the MSL.
-  The choice for the eventual third coordinates will be documented thow a CRS URI.
-* for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
-  Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
+  * for **dowloading** in GeoJSON the two first coordinates will only be geographic coordinates expressed in ETRS89
+    (or an ITS CRS over-seas)
+    with eventually a third coordinate which can be in application of Inspire regulation:
+      * ellipsoidal height above the GRS80 ellipsoid,
+      * on land, a height expressed in the European Vertical Reference System (EVRS),
+      * in the free atmosphere, a height converted from barometric pressure using ISO 2533:1975 International Standard
+        Atmosphere,
+      * in marine areas where there is an appreciable tidal range (tidal waters), a height above the Lowest Astronomical
+        Tide (LAT),
+      * in other marine areas, a height above the Mean Sea Level (MSL) or a well-defined reference level close to the
+        MSL.
+    The choice for the eventual third coordinates will be documented thow a CRS URI.
+  * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
+    Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
 ## The technical solution
 
 Technically, the solution is to add to a web application an API interface that implements at least a download service
-and eventuelly a view service.
+and eventually a view service.
 If the thematic application doesn't implement a view service, a mapping application will be used to make a view service
 by using the data from the download service.
 The catalogue can be generally a specific application distinct from thematic applications.
