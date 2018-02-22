@@ -48,6 +48,8 @@ Therefore the goal here is to simplify this subject with 2 main ideas:
         MSL (http://inspire.ec.europa.eu/crs/ETRS89-GRS80-MSL).
         
       The choice for the potential third coordinates will be documented by a CRS URI.
+      If only 2 coordiantes are given, the CRS URI will be http://www.opengis.net/def/crs/EPSG/0/4258
+      
   * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
