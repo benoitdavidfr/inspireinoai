@@ -300,7 +300,7 @@ definitions:
             Spatial resolution refers to the level of detail of the data set. It shall be expressed as a set of zero
           to many resolution distances (typically for gridded data and imagery-derived products) or equivalent
           scales (typically for maps or map-derived products).
-            An equivalent scale is generally expressed as an integer value expressing the scale denominator.
+            A resolution distance shall be expressed as a numerical value associated with a unit of length.
         type: array
         items:
           type: object
@@ -310,15 +310,15 @@ definitions:
             unit:
               description: the unit of length
               type: string
-              enum: [ meter, kilometer, millimeter]
+              enum: [ meter ]
       conformity:
         description: >-
           CONFORMITY (7.)
         type: array
         items:
           description: >-
-            If the specification can be expressed throw an URI, then its is given in the specificationUri property
-              else the specification is experessed throw its title and reference date
+            If the specification can be expressed by an URI, then it is given in the specificationUri property
+              else the specification is experessed by its title and reference date
           type: object
           properties:
             specificationUri: {type: string}

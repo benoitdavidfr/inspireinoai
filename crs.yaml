@@ -1,4 +1,4 @@
-titre: exigences sur les CRS dans Inspire
+title: crs.yaml - synthèse des exigences Inspire sur les CRS
 doc: |
   Résumé:
     Sauf exceptions, les SD doivent être exposées dans au moins un des CRS:

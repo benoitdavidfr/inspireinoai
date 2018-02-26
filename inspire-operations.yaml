@@ -1,4 +1,4 @@
-titre: opérations des services Inspire
+title: inspire-operations.yaml - description des opérations des services Inspire
 doc: |
   Description des opérations d'un service Inspire de recherche, de consultation ou de téléchargement.
   Le champ refLeg référence les parties du règlement définissant ces services

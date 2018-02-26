@@ -12,11 +12,17 @@ journal: |
   10/2/2018 :
     création
 htmlFiles:
-  - /geoapi/inspireoai/inspire-service.yaml
+  - /geoapi/inspireoai/inspire-operations.yaml
   - /geoapi/inspireoai/inspire-oai.yaml
-  - /geoapi/inspireoai/inspire-appli.yaml
+  - /geoapi/inspireoai/crs.yaml
+  - /geoapi/inspireoai/inspireinoai.yaml
+  - /geoapi/inspireoai/discoveryinoai.yaml
   - /geoapi/inspireoai/metadata.yaml
-  - /geoapi/inspireoai/operationcap.yaml
+  - /geoapi/inspireoai/servicecap.yaml
+  - /geoapi/inspireoai/sotdescription.yaml
+  - /geoapi/inspireoai/featurecollection.yaml
 phpScripts:
+  - /geoapi/inspireoai/mdquery.php
 phpIncludes:
+  - /geoapi/inspireoai/bnf.inc.php
 submodules:
