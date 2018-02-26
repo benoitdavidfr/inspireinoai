@@ -202,7 +202,9 @@ $tree->analyze('expr', $_GET['query']);
 echo "<pre>tree="; print_r($tree); echo "</pre>\n";
 */
 $result = $specs->check($_GET['query']);
-if ($result == '')
-  echo "résultat vide<br\n";
+if ($result === false)
+  echo "résultat ko<br\n";
+elseif ($result == '')
+  echo "résultat OK vide<br\n";
 else
-  echo "result = \"$result\"\n";
+  echo "resultat OK, reste: \"$result\"\n";

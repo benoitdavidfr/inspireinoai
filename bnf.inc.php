@@ -44,10 +44,11 @@ class BNF {
   function __toString() {
     $str = "<ul>\n";
     foreach ($this->rules as $symbol => $rules) {
+      $str .= '<li>{'.$symbol."} ::=\n<ul>\n";
       foreach ($rules as $rule) {
-        $rule2 = Rule($symbol, $rule['def']);
-        $str .= "<li>".$rule2." // $rule[comment]\n";
+        $str .= "<li>$rule[def] // $rule[comment]\n";
       }
+      $str .= "</ul>\n";
     }
     $str .= "</ul>\n";
     return $str;
@@ -71,7 +72,7 @@ class BNF {
       }
     }
     if ($verbose)
-      echo "test BNF ko pour $symbol<br\n";
+      echo "test BNF ko pour $symbol<br>\n";
     return false;
   }
   
@@ -145,7 +146,8 @@ class Seq extends Def {
     //echo "<pre>seq="; print_r($this->seq); echo "</pre>\n";
     $text = $text0;
     foreach ($this->seq as $elt) {
-      echo "Test Seq de $elt<br>\n";
+      if ($verbose)
+        echo "Test Seq de $elt<br>\n";
       $check = $this->checkOneElt($text, $elt, $verbose); 
       if ($check === false)
         break;
@@ -167,7 +169,7 @@ class Seq extends Def {
       return $text;
     while(true) {
       foreach ($this->seq as $elt) {
-        $check = checkOneElt($text, $elt, $verbose); 
+        $check = $this->checkOneElt($text, $elt, $verbose); 
         if ($check === false)
           break;
         else
@@ -277,8 +279,9 @@ class RegExp extends Def {
   
   // teste si un texte est conforme, si conforme alors renvoie le texte restant sinon false
   function check(string $text, bool $verbose=true) {
-    echo "pattern=$this->pattern<br>\n";
-    echo "text=$text<br>\n";
+    if ($verbose)
+      echo "pattern=$this->pattern<br>\n",
+           "text=$text<br>\n";
     if (!preg_match('!^([^/]*)!', $text, $matches))
       throw new Exception("No match");
     $subtext = $matches[1];
