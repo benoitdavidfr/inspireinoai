@@ -23,6 +23,9 @@ doc: |
     {expr} ::= conformsTo({spec}) | doesntConformTo({spec})
     {spec} ::= {uri} | {regexpOfTitle}
     {expr} ::= mdBetween({date},{date}) | mdBefore({date}) | mdAfter({date})
+journal: |
+  26/2/2018:
+    commence à marcher
 */
 require_once __DIR__.'/bnf.inc.php';
 
@@ -148,6 +151,7 @@ EOT;
 if (!isset($_GET['query']))
   die("empty query<br>\n</body></html>\n");
 
+/*
 class Tree {
   private $label; // string
   private $children; // array des enfants
@@ -196,15 +200,18 @@ class Tree {
       throw new Exception("No match line ".__LINE__);
   }
 }
-/*
+
 $tree = new Tree;
 $tree->analyze('expr', $_GET['query']);
 echo "<pre>tree="; print_r($tree); echo "</pre>\n";
 */
 $result = $specs->check($_GET['query']);
-if ($result === false)
+if (!$result)
   echo "résultat ko<br\n";
-elseif ($result == '')
-  echo "résultat OK vide<br\n";
-else
-  echo "resultat OK, reste: \"$result\"\n";
+else {
+  if ($result[1] == '')
+    echo "résultat OK vide<br>\n";
+  else
+    echo "resultat OK, reste: \"$result[1]\"<br>\n";
+  echo "<pre>tree ="; print_r($result[0]);
+}

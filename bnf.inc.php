@@ -6,9 +6,24 @@ classes:
 doc: |
   voir https://fr.wikipedia.org/wiki/Forme_de_Backus-Naur
   Une BNF est décrite par un objet de la classe BNF
-  A chaque classe (sauf BNf) est associée une fonction constructeur
+  A chaque classe (sauf BNF) est associée une fonction constructeur
   voir l'exemple de la définition du langage de requêtes sur les métadonnées
+journal: |
+  26/2/2018:
+    Commence à marcher mais encore beaucoup d'erreurs
 */
+class Tree {
+  private $label; // string
+  private $children; // array des enfants
+  function __construct(string $label) { $this->label = $label; $this->children = []; }
+  function addChild(Tree $child) { $this->children[] = $child; }
+  function __clone() {
+    $children = $this->children;
+    $this->children = [];
+    foreach ($children as $child)
+      $this->children[] = clone $child;
+  }
+};
 
 /*PhpDoc: classes
 name: class BNF
@@ -54,30 +69,32 @@ class BNF {
     return $str;
   }
   
-  // teste si un texte est conforme à la définition d'un symbole, si conforme alors renvoie le texte restant sinon false
-  function checkSymbol(string $text, string $symbol, bool $verbose=true) {
+  // teste si un texte est conforme à la définition d'un symbole,
+  // si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function checkSymbol(string $text, string $symbol, bool $verbose=true): array {
     foreach ($this->rules[$symbol] as $rule) {
       //echo "<pre>rule="; print_r($rule); echo "</pre>\n";
       if ($verbose)
         echo "test BNF de $rule[comment]<br>\n";
       $check = $rule['def']->check($text, $verbose);
-      if ($check === false) {
+      if (!$check) {
         if ($verbose)
           echo "test BNF $symbol ko de $rule[comment]<br>\n";
       }
       else {
         if ($verbose)
-          echo "test BNF $symbol OK de $rule[comment] returns \"$check\"<br>\n";
+          echo "test BNF $symbol OK de $rule[comment] returns \"$check[1]\"<br>\n";
         return $check;
       }
     }
     if ($verbose)
       echo "test BNF ko pour $symbol<br>\n";
-    return false;
+    return [];
   }
   
-  // teste si un texte est conforme à la BNF, si conforme alors renvoie le texte restant sinon false
-  function check(string $text, bool $verbose=true) {
+  // teste si un texte est conforme à la BNF,
+  // si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function check(string $text, bool $verbose=true): array {
     return $this->checkSymbol($text, $this->start, $verbose);
   }
 };
@@ -124,15 +141,15 @@ class Seq extends Def {
     return (!$this->option ? implode(' ',$this->seq) : '('.implode(' ',$this->seq).')'.$this->option);
   }
   
-  // teste si un texte est conforme à un élément, si conforme alors renvoie le texte restant sinon false
-  function checkOneElt(string $text, $elt, bool $verbose=true) {
+  // teste si un texte conforme à l'élément, si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function checkOneElt(string $text, $elt, bool $verbose=true): array {
     if ($verbose)
       echo "Test Seq1 de $elt<br>\n";
     $check = $elt->check($text, $verbose);
-    if ($check === false) {
+    if (!$check) {
       if ($verbose)
         echo "test Seq1 ko de $elt<br>\n";
-      return false;
+      return [];
     }
     else {
       if ($verbose)
@@ -141,42 +158,43 @@ class Seq extends Def {
     }
   }
   
-  // teste si un texte est conforme, si conforme alors renvoie le texte restant sinon false
-  function check(string $text0, bool $verbose=true) {
+  // teste si un texte est conforme, si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function check(string $text0, bool $verbose=true): array {
     //echo "<pre>seq="; print_r($this->seq); echo "</pre>\n";
+    $tree = new Tree('Seq');
     $text = $text0;
     foreach ($this->seq as $elt) {
       if ($verbose)
         echo "Test Seq de $elt<br>\n";
       $check = $this->checkOneElt($text, $elt, $verbose); 
-      if ($check === false)
+      if (!$check)
         break;
-      else
-        $text = $check;
+      $tree->addChild($check[0]);
+      $text = $check[1];
     }
-    if ($check === false) {
+    if (!$check) {
       switch ($this->option) {
         case '':
         case '+':
-          return false;
+          return [];
         case '*':
         case '?':
-          return $text0;
+          return [new Tree('Seq'), $text0];
       }
     }
     // la première itération est OK
     if (in_array($this->option, ['','?']))
-      return $text;
+      return [$tree, $text];
     while(true) {
+      $tree0 = clone $tree;
+      $text0 = $text;
       foreach ($this->seq as $elt) {
         $check = $this->checkOneElt($text, $elt, $verbose); 
-        if ($check === false)
-          break;
-        else
-          $text = $check;
+        if (!$check)
+          return [$tree0, $text0];
+        $tree->addChild($check[0]);
+        $text = $check[1];
       }
-      if ($check === false)
-        return $text;
     }
   }
 };
@@ -200,18 +218,20 @@ class Choice extends Def {
   function __construct(array $choices) { $this->choices = $choices; }
   function setBnf(BNF $bnf) { foreach ($this->choices as $elt) { $elt->setBnf($bnf); } }
   function __toString() { return '('.implode(' | ',$this->choices).')'; }
-  function check(string $text, bool $verbose=true) {
+  
+  // teste si un texte est conforme, si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function check(string $text, bool $verbose=true): array {
     foreach ($this->choices as $choice) {
       $check = $choice->check($text, $verbose);
-      if ($check !== false) {
+      if ($check) {
         if ($verbose)
-          echo "Test Choice OK pour $choice returns \"$check\"<br>\n";
+          echo "Test Choice OK pour $choice returns \"$check[1]\"<br>\n";
         return $check;
       }
     }
     if ($verbose)
       echo "Test Choice ko pour $this<br>\n";
-    return false;
+    return [];
   }
 };
 function Choice(array $choices) {
@@ -233,18 +253,18 @@ class Term {
   function setBnf(BNF $bnf) { }
   function __toString() { return "'".$this->str."'"; }
   
-  // teste si un texte est conforme, si conforme alors renvoie le texte restant sinon false
-  function check(string $text, bool $verbose=true) {
+  // teste si un texte est conforme, si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function check(string $text, bool $verbose=true): array {
     if (strncmp($text, $this->str, strlen($this->str))==0) {
       $ret = substr($text, strlen($this->str));
       if ($verbose)
         echo "Test Term OK '$this->str' returns \"$ret\"<br>\n";
-      return $ret;
+      return [new Tree('Term:'.$this->str), $ret];
     }
     else {
       if ($verbose)
         echo "Test Term ko '$this->str'<br>\n";
-      return false;
+      return [];
     }
   }
 };
@@ -261,7 +281,7 @@ class Symb {
   function setBnf(BNF $bnf) { $this->bnf = $bnf; }
   function __toString() { return '{'.$this->str.'}'; }
   // teste si un texte est conforme, si conforme alors renvoie le texte restant sinon false
-  function check(string $text, bool $verbose=true) {
+  function check(string $text, bool $verbose=true): array {
     return $this->bnf->checkSymbol($text, $this->str, $verbose);
   }
 };
@@ -277,8 +297,8 @@ class RegExp extends Def {
   function setBNF(BNF $bnf) {}
   function __toString() { return 'RegExp('.$this->pattern.')'; }
   
-  // teste si un texte est conforme, si conforme alors renvoie le texte restant sinon false
-  function check(string $text, bool $verbose=true) {
+  // teste si un texte est conforme, si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
+  function check(string $text, bool $verbose=true): array {
     if ($verbose)
       echo "pattern=$this->pattern<br>\n",
            "text=$text<br>\n";
@@ -286,10 +306,10 @@ class RegExp extends Def {
       throw new Exception("No match");
     $subtext = $matches[1];
     $pattern = $this->pattern;
-    if (preg_match("!^$pattern!", $subtext, $matches))
-      return substr($text, strlen($matches[0]));
+    if (preg_match("!^($pattern)!", $subtext, $matches))
+      return [new Tree('RegExp:'.$matches[1]), substr($text, strlen($matches[0]))];
     else
-      return false;
+      return [];
   }
 };
 function RegExp($str) { return new RegExp($str); }
