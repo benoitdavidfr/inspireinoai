@@ -10,7 +10,18 @@ doc: |
   voir l'exemple de la définition du langage de requêtes sur les métadonnées
 journal: |
   26/2/2018:
-    Commence à marcher mais encore beaucoup d'erreurs
+    10:30
+      Tous les exemples fonctionnent
+*/
+
+/*PhpDoc: classes
+name: class Tree
+title: classe définissant un arbre n-aire
+doc: |
+  L'abre définit un label et des enfants.
+  Le label est initialisé à la construction.
+  Les enfants peuvent être ajoutés avec la méthode addChild(Tree).
+  L'abre peut être cloné.
 */
 class Tree {
   private $label; // string
@@ -94,7 +105,8 @@ class BNF {
   
   // teste si un texte est conforme à la BNF,
   // si conforme alors renvoie [l'arbre résultant, le texte restant] sinon []
-  function check(string $text, bool $verbose=true): array {
+  function check(string $text, bool $verbose=false): array {
+    //$verbose = true; // decommenter pour verbose
     return $this->checkSymbol($text, $this->start, $verbose);
   }
 };
@@ -258,12 +270,12 @@ class Term {
     if (strncmp($text, $this->str, strlen($this->str))==0) {
       $ret = substr($text, strlen($this->str));
       if ($verbose)
-        echo "Test Term OK '$this->str' returns \"$ret\"<br>\n";
+        echo "Test Term OK \"$this->str\" returns \"$ret\"<br>\n";
       return [new Tree('Term:'.$this->str), $ret];
     }
     else {
       if ($verbose)
-        echo "Test Term ko '$this->str'<br>\n";
+        echo "Test Term ko \"$this->str\"<br>\n";
       return [];
     }
   }
@@ -290,6 +302,9 @@ function Symb($str) { return new Symb($str); }
 /*PhpDoc: classes
 name: class RegExp extends Def
 title: Terminal correspondant à une expression régulière
+doc: |
+  J'utilise le caractère ! pour délimiter le pattern
+  Si ce caractère existe dans le pattern cela plantera
 */
 class RegExp extends Def {
   private $pattern; // string, ne comprend ni limiteur ni ^ ni $
@@ -302,11 +317,8 @@ class RegExp extends Def {
     if ($verbose)
       echo "pattern=$this->pattern<br>\n",
            "text=$text<br>\n";
-    if (!preg_match('!^([^/]*)!', $text, $matches))
-      throw new Exception("No match");
-    $subtext = $matches[1];
     $pattern = $this->pattern;
-    if (preg_match("!^($pattern)!", $subtext, $matches))
+    if (preg_match("!^($pattern)!", $text, $matches))
       return [new Tree('RegExp:'.$matches[1]), substr($text, strlen($matches[0]))];
     else
       return [];

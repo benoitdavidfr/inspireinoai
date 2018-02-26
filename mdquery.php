@@ -25,7 +25,8 @@ doc: |
     {expr} ::= mdBetween({date},{date}) | mdBefore({date}) | mdAfter({date})
 journal: |
   26/2/2018:
-    commence à marcher
+    10:30
+      Tous les exemples fonctionnent
 */
 require_once __DIR__.'/bnf.inc.php';
 
@@ -118,16 +119,15 @@ switch (isset($_GET['action']) ? $_GET['action'] : null) {
       "contient le mot-clé 'http://inspire.ec.europa.eu/theme/lu'"
          => "hasKeyword('http://inspire.ec.europa.eu/theme/lu')",
       "contient le mot-clé 'urbanisme' du CVOC URBAMET" => "hasKeyword('urbanisme',/URBAMET/)",
-      "responsibleParty.name contient DREAL" => "regExp(/DREAL/, responsibleParty.name, 'i')",
-      "intersects a bbox" => "intersects(0.0, 45.0, 1.0, 46.0)",
-      "date entre 2 dates" => "between(2010,2015)",
+      "responsibleParty.name contient DREAL" => "regExp(/DREAL/,responsibleParty.name,'i')",
+      "intersects a bbox" => "intersects(0.0,45.0,1.0,46.0)",
       "date postérieure à une date" => "after(2010)",
-      "resolution" => "lessThan(max(spatialResolutionScaleDenominator), 1000)",
+      "resolution" => "lessThan(max(spatialResolutionScaleDenominator),1000)",
       "conforme à la spec usage du sol" => "conformsTo('http://inspire.ec.europa.eu/theme/lu')",
       "conforme à la spec CNIG des PLU" => "conformsTo(/CNIG-PLU/)",
       "date des MD postérieure à une date" => "mdAfter(2018-01-15)",
       "titre contient eau et date des MD postérieure à une date"
-         => "and(regExp(/eau/, title, 'i'),mdAfter(2018-01-15))",
+         => "and(regExp(/eau/,title,'i'),mdAfter(2018-01-15))",
     ] as $title => $query)
       echo "<li><a href='?query=",urlencode($query),"'>$title\n";
     echo "</ul>\n";
