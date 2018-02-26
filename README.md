@@ -54,7 +54,7 @@ Therefore the goal here is to simplify this subject with 2 main ideas:
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
 ## Metadata query specification
-Query specifications
+A query language on metadata is specified by the following BNF:
 
     {expr} ::=
         'and(' {expr} (',' {expr})* ')' // conjonction d'expressions
