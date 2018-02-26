@@ -53,6 +53,45 @@ Therefore the goal here is to simplify this subject with 2 main ideas:
   * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
+## Metadata query specification
+Query specifications
+
+    {expr} ::=
+        'and(' {expr} (',' {expr})* ')' // conjonction d'expressions
+        'or(' {expr} (',' {expr})* ')' // disjonction d'expressions
+        'not(' {expr} ')' // négation d'une expression
+        'regExp(' {regExp} ',' {eltStr} (',' {string})? ')' // exp. régulière sur un élément de type chaine ou array(chaine) avec une option éventuelle
+        'equals(' {eltEnum} ',' {string} ')' // test d'égalité entre un élément de type Enum et une valeur
+        'contains(' {eltArrayEnum} ',' {string} ')' // test d'appartenance pour un élément de type array(Enum) et une valeur
+        'hasKeyword(' {string} (',' ({string} | {regExp}))? ')' // existence d'un mot-clé défini par soit son libellé soit son URI plus éventuellement l'URI ou un RegExp du titre du CVOC
+        'intersects(' {number} ',' {number} ',' {number} ',' {number} ')' // intersection avec un rectangle englobant défini par westBoundLongitude, southBoundLatitude, eastBoundLongitude, northBoundLatitude
+        'before(' {date} ')' // date sur les données avant la date
+        'after(' {date} ')' // date sur les données après la date
+        'lessThan(' {resolution} ',' {number} ')' // resolution plus petite qu'une valeur
+        'greaterThan(' {resolution} ',' {number} ')' // resolution plus grande qu'une valeur
+        'conformsTo(' {spec} ')' // conformité à une spec
+        'doesntConformTo(' {spec} ')' // non conformité à une spec
+        'mdBefore(' {date} ')' // date de mise à jour des métadonnées avant la date
+        'mdAfter(' {date} ')' // date de mise à jour des métadonnées après la date 
+    {eltStr} ::=
+        ('title' | 'abstract' | 'locator' | 'uri' | 'operatesOn' | 'lineage' | 'useLimitation' | 'responsibleParty.name' | 'responsibleParty.email' | 'mdContact.name' | 'mdContact.email') // les éléments de type chaine ou array(chaine) 
+    {eltEnum} ::=
+        ('type' | 'serviceType' | 'accessConstraints' | 'language') // les éléments de type Enum 
+    {eltArrayEnum} ::=
+        ('resourceLanguage' | 'topicCategory') // les éléments de type array(Enum) 
+    {resolution} ::=
+        ('max(spatialResolutionDistance)' | 'min(spatialResolutionDistance)' | 'max(spatialResolutionScaleDenominator)' | 'min(spatialResolutionScaleDenominator)') // resolution 
+    {spec} ::=
+        ({string} | {regExp}) // la spec est définie par un URI ou par un RegExp sur son titre 
+    {string} ::=
+        RegExp('[^']*') // définition d'une chaine par une expression régulière 
+    {number} ::=
+        RegExp([0-9]+(\.[0-9]+)?) // définition d'un nombre par une expression régulière 
+    {regExp} ::=
+        RegExp(/[^/]*/) // définition d'une expression régulière entre 2 / 
+    {date} ::=
+        RegExp([0-9][0-9][0-9][0-9](-[0-9][0-9](-[0-9][0-9])?)?) // définition d'une date par une expression régulière 
+
 ## The proposed solution
 
 Technically, the solution is to add to a web application an API interface that implements at least a download service
