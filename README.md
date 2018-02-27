@@ -53,6 +53,36 @@ Therefore the goal here is to simplify this subject with 2 main ideas:
   * for **viewing**, the OGC WMS 1.3 conventions will be followed and EPSG codes will be used.
     Default and recommanded CRS is the 'Spherical Mercator' CRS using well-known EPSG:3857 code.
 
+## The proposed solution
+
+Technically, the solution is to add to a web application an API interface that implements at least a download service
+and potentially a view service.
+If the thematic application doesn't implement a view service, a mapping application will be used to make a view service
+by using the data from the download service.
+The catalogue can be generally a specific application distinct from thematic applications.
+
+Defining the API specifications using the OAI formalism contributes to standardize the API
+and simplifies the implementation for thematic applications.
+
+A [preliminary version of OAI/Swagger definition for download and view services is available here](https://app.swaggerhub.com/apis/benoitdavidfr/inspireinoai).
+The source file corresponds to
+[inspireinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/inspireinoai.yaml).
+
+A [preliminary version of OAI/Swagger definition for a discovery service is available here](https://app.swaggerhub.com/apis/benoitdavidfr/discoveryinoai).
+The source file corresponds to
+[discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/discoveryinoai.yaml).
+
+A [preliminary version of OAI/Swagger definition for metadata is available here](https://app.swaggerhub.com/apis/benoitdavidfr/metadatainoai).
+The source file corresponds to
+[metadata.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml).
+
+These specifications are designed so that the thematic application implementing them will conform
+the Inspire regulations.
+
+These specifications can be used in several ways:
+  * natively implement API to make a thematic application conformant to Inspire,
+  * build a bridge between the OAI world and the OG/ISO191xx world, in one way or the other.
+
 ## Metadata query specification
 A query language on metadata is specified by the following BNF:
 
@@ -91,36 +121,6 @@ A query language on metadata is specified by the following BNF:
         RegExp(/[^/]*/) // définition d'une expression régulière entre 2 / 
     {date} ::=
         RegExp([0-9][0-9][0-9][0-9](-[0-9][0-9](-[0-9][0-9])?)?) // définition d'une date par une expression régulière 
-
-## The proposed solution
-
-Technically, the solution is to add to a web application an API interface that implements at least a download service
-and potentially a view service.
-If the thematic application doesn't implement a view service, a mapping application will be used to make a view service
-by using the data from the download service.
-The catalogue can be generally a specific application distinct from thematic applications.
-
-Defining the API specifications using the OAI formalism contributes to standardize the API
-and simplifies the implementation for thematic applications.
-
-A [preliminary version of OAI/Swagger definition for download and view services is available here](https://app.swaggerhub.com/apis/benoitdavidfr/inspireinoai).
-The source file corresponds to
-[inspireinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/inspireinoai.yaml).
-
-A [preliminary version of OAI/Swagger definition for a discovery service is available here](https://app.swaggerhub.com/apis/benoitdavidfr/discoveryinoai).
-The source file corresponds to
-[discoveryinoai.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/discoveryinoai.yaml).
-
-A [preliminary version of OAI/Swagger definition for metadata is available here](https://app.swaggerhub.com/apis/benoitdavidfr/metadatainoai).
-The source file corresponds to
-[metadata.yaml](https://raw.githubusercontent.com/benoitdavidfr/inspireinoai/master/metadata.yaml).
-
-These specifications are designed so that the thematic application implementing them will conform
-the Inspire regulations.
-
-These specifications can be used in several ways:
-  * natively implement API to make a thematic application conformant to Inspire,
-  * build a bridge between the OAI world and the OG/ISO191xx world, in one way or the other.
 
 ## References
 
