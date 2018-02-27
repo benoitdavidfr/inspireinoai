@@ -9,6 +9,9 @@ doc: |
   A chaque classe (sauf BNF) est associée une fonction constructeur
   voir l'exemple de la définition du langage de requêtes sur les métadonnées
 journal: |
+  27/2/2018:
+    4:45
+      Ajout d'une explication en cas de non-conformité
   26/2/2018:
     10:30
       Tous les exemples fonctionnent
@@ -33,6 +36,26 @@ class Tree {
     $this->children = [];
     foreach ($children as $child)
       $this->children[] = clone $child;
+  }
+};
+
+/*PhpDoc: classes
+name: class Explain
+title: classe permettant de construire l'explication de non-conformité
+doc: |
+  Cette classe statique enregistre à chaque succès de l'analyse la chaine restante à analyser
+  et conserve uniquement le texte le plus court.
+  A la fin de l'analyse en cas d'échec, son explication consiste à afficher jusqu'où l'analyse a été effectuée
+*/
+class Explain {
+  static $text=null;
+  static function trace(string $text) {
+    if (!self::$text or (strlen(self::$text) > strlen($text)))
+      self::$text = $text;
+  }
+  static function result(string $text0) {
+    $len0 = strlen($text0) - strlen(self::$text);
+    echo 'Explain: <u>',substr($text0, 0, $len0),'</u><b>',self::$text,"</b><br>\n";
   }
 };
 
@@ -95,6 +118,7 @@ class BNF {
       else {
         if ($verbose)
           echo "test BNF $symbol OK de $rule[comment] returns \"$check[1]\"<br>\n";
+        Explain::trace($check[1]);
         return $check;
       }
     }
@@ -195,15 +219,19 @@ class Seq extends Def {
       }
     }
     // la première itération est OK
-    if (in_array($this->option, ['','?']))
+    if (in_array($this->option, ['','?'])) {
+      Explain::trace($text);
       return [$tree, $text];
+    }
     while(true) {
       $tree0 = clone $tree;
       $text0 = $text;
       foreach ($this->seq as $elt) {
         $check = $this->checkOneElt($text, $elt, $verbose); 
-        if (!$check)
+        if (!$check) {
+          Explain::trace($text0);
           return [$tree0, $text0];
+        }
         $tree->addChild($check[0]);
         $text = $check[1];
       }
@@ -238,6 +266,7 @@ class Choice extends Def {
       if ($check) {
         if ($verbose)
           echo "Test Choice OK pour $choice returns \"$check[1]\"<br>\n";
+        Explain::trace($check[1]);
         return $check;
       }
     }
@@ -271,6 +300,7 @@ class Term {
       $ret = substr($text, strlen($this->str));
       if ($verbose)
         echo "Test Term OK \"$this->str\" returns \"$ret\"<br>\n";
+      Explain::trace($ret);
       return [new Tree('Term:'.$this->str), $ret];
     }
     else {
@@ -318,8 +348,11 @@ class RegExp extends Def {
       echo "pattern=$this->pattern<br>\n",
            "text=$text<br>\n";
     $pattern = $this->pattern;
-    if (preg_match("!^($pattern)!", $text, $matches))
-      return [new Tree('RegExp:'.$matches[1]), substr($text, strlen($matches[0]))];
+    if (preg_match("!^($pattern)!", $text, $matches)) {
+      $ret = substr($text, strlen($matches[0]));
+      Explain::trace($ret);
+      return [new Tree('RegExp:'.$matches[1]), $ret];
+    }
     else
       return [];
   }
