@@ -22,7 +22,6 @@ htmlFiles:
   - /geoapi/inspireoai/sotdescription.yaml
   - /geoapi/inspireoai/featurecollection.yaml
 phpScripts:
-  - /geoapi/inspireoai/mdquery.php
 phpIncludes:
-  - /geoapi/inspireoai/bnf.inc.php
 submodules:
+  - /geoapi/inspireoai/syntan
